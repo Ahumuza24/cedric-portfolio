@@ -2030,3 +2030,11 @@ body {
     -webkit-transition-delay: .16s;
     transition-delay: .16s
 }
+svg {
+	position: absolute;
+	top: 50%;
+	left: 80%;
+	transform: translate(-50%,-50%);
+	height: 80%;
+	width: 80%;
+}
