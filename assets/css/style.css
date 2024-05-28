@@ -1369,7 +1369,11 @@ textarea.form-input::-webkit-resizer { display: none; }
     font-size: var(--fs-8);
   }
 
-  .info_more-btn ion-icon { display: none; }
+  .info_more-btn ion-icon { display: none;
+  color: var(--orange-yellow-crayola);
+margin-left: 30%;
+}
+
 
   .separator { margin: 32px 0; }
 
