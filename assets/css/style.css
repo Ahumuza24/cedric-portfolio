@@ -1360,8 +1360,9 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .info_more-btn {
     top: -30px;
-    right: -30px;
+    right: 20%;
     padding: 10px 15px;
+    color: var(--orange-yellow-crayola);
   }
 
   .info_more-btn span {
@@ -1369,10 +1370,7 @@ textarea.form-input::-webkit-resizer { display: none; }
     font-size: var(--fs-8);
   }
 
-  .info_more-btn ion-icon { display: none;
-  color: var(--orange-yellow-crayola);
-margin-left: 30%;
-}
+  .info_more-btn ion-icon { display: none;}
 
 
   .separator { margin: 32px 0; }
