@@ -1360,7 +1360,7 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .info_more-btn {
     top: -30px;
-    right: 20%;
+    right: 50%;
     padding: 10px 15px;
     color: var(--orange-yellow-crayola);
   }
