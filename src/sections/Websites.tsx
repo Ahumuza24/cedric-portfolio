@@ -29,12 +29,16 @@ function WebsiteCard({ site, index }: { site: typeof websites[0]; index: number 
                     <div className="absolute inset-0 flex items-center justify-center -z-10">
                         <Globe size={24} className="text-white/10 animate-pulse" />
                     </div>
-                    {/* Live Snapshot API */}
+                    {/* Live Snapshot API (Microlink) */}
                     <img
-                        src={`https://image.thum.io/get/width/600/crop/400/png/${site.url}`}
+                        src={`https://api.microlink.io/?url=${encodeURIComponent(site.url)}&screenshot=true&meta=false&embed=screenshot.url`}
                         alt={`${site.name} Preview`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 bg-white"
                         loading="lazy"
+                        onError={(e) => {
+                            // Fallback if the snapshot API fails
+                            e.currentTarget.style.display = 'none';
+                        }}
                     />
                     {/* Dark overlay that fades on hover */}
                     <div className="absolute inset-0 bg-charcoal/40 group-hover:bg-transparent transition-colors duration-300" />
