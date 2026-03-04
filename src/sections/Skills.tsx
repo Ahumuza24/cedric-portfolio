@@ -39,7 +39,7 @@ function SkillCategory({ category, index }: { category: typeof skills[0]; index:
                 </h3>
             </div>
 
-            <div className="flex flex-wrap gap-2.5 mt-auto">
+            <div className="flex flex-wrap gap-2.5 mt-2">
                 {category.items.map((item, i) => (
                     <SkillTag key={item} name={item} index={i} />
                 ))}
