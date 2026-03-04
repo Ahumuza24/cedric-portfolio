@@ -80,8 +80,8 @@ export default function Hero() {
                             transition={{ duration: 0.6, delay: 0.3 }}
                             className="text-offwhite/60 text-base leading-relaxed max-w-lg"
                         >
-                            Building production-ready systems with React, Django, Python, and cloud deployment platforms.
-                            I deliver internal enterprise tools, automation systems, and scalable web platforms
+                            I build production-ready systems and
+                            deliver internal enterprise tools, automation systems, and scalable web platforms
                             that improve operational efficiency.
                         </motion.p>
 
