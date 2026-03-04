@@ -1,4 +1,4 @@
-import { Github, Mail, MapPin, Phone } from 'lucide-react'
+import { Github, Mail, Phone } from 'lucide-react'
 
 export default function Footer() {
     return (
@@ -12,7 +12,7 @@ export default function Footer() {
                         </div>
                         <div>
                             <p className="font-bold text-offwhite">Cedric Ahumuza</p>
-                            <p className="text-xs text-offwhite/40">Full Stack Developer · IT Specialist</p>
+                            <p className="text-xs text-offwhite/40">Full Stack Developer</p>
                         </div>
                     </div>
 
@@ -24,7 +24,7 @@ export default function Footer() {
                     {/* Social */}
                     <div className="flex items-center gap-4">
                         <a
-                            href="https://github.com/Ahumuza2"
+                            href="https://github.com/Ahumuza24"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-offwhite/40 hover:text-burnt-orange transition-colors duration-200"
@@ -38,6 +38,13 @@ export default function Footer() {
                             aria-label="Email"
                         >
                             <Mail size={18} />
+                        </a>
+                        <a
+                            href="https://wa.me/256703103834"
+                            className="text-offwhite/40 hover:text-burnt-orange transition-colors duration-200"
+                            aria-label="WhatsApp"
+                        >
+                            <Phone size={18} />
                         </a>
                     </div>
                 </div>

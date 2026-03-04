@@ -42,7 +42,7 @@ export default function Contact() {
         { icon: MapPin, label: 'Location', value: 'Luteete, Gayaza Road, Kampala, Uganda' },
         { icon: Phone, label: 'Phone', value: '+256703103834', href: 'tel:+256703103834' },
         { icon: Mail, label: 'Email', value: 'ahumuzacedric@gmail.com', href: 'mailto:ahumuzacedric@gmail.com' },
-        { icon: Github, label: 'GitHub', value: 'github.com/Ahumuza2', href: 'https://github.com/Ahumuza2' },
+        { icon: Github, label: 'GitHub', value: 'github.com/Ahumuza24', href: 'https://github.com/Ahumuza24' },
     ]
 
     return (

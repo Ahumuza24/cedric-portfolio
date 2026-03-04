@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
-import { ArrowDown, Github, Mail, Download, ChevronRight } from 'lucide-react'
+import { ArrowDown, Github, Mail, Download, ChevronRight, Phone } from 'lucide-react'
 
 const floatingTags = ['React', 'Python', 'Django', 'TypeScript', 'Node.js', 'Docker', 'Next.js', 'PostgreSQL', 'Firebase', 'Azure']
 
@@ -73,16 +73,6 @@ export default function Hero() {
                             </h1>
                         </motion.div>
 
-                        {/* Subtitle */}
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                            className="text-offwhite/50 text-sm font-medium tracking-widest uppercase"
-                        >
-                            IT Specialist · Creative Technologist
-                        </motion.p>
-
                         {/* Bio */}
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
@@ -137,12 +127,12 @@ export default function Hero() {
                             className="flex items-center gap-4 pt-2"
                         >
                             <a
-                                href="https://github.com/Ahumuza2"
+                                href="https://github.com/Ahumuza24"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-2 text-xs text-offwhite/40 hover:text-burnt-orange transition-colors"
                             >
-                                <Github size={16} /> Ahumuza2
+                                <Github size={16} /> Ahumuza24
                             </a>
                             <span className="w-px h-4 bg-white/10" />
                             <a
@@ -150,6 +140,12 @@ export default function Hero() {
                                 className="flex items-center gap-2 text-xs text-offwhite/40 hover:text-burnt-orange transition-colors"
                             >
                                 <Mail size={16} /> ahumuzacedric@gmail.com
+                            </a>
+                            <a
+                                href="https://wa.me/256703103834"
+                                className="flex items-center gap-2 text-xs text-offwhite/40 hover:text-burnt-orange transition-colors"
+                            >
+                                <Phone size={16} /> +256 703 103834
                             </a>
                         </motion.div>
                     </div>

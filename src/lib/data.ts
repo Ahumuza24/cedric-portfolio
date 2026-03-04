@@ -143,6 +143,13 @@ export const projects = [
         tech: ['Python', 'Django', 'Custom ML Models'],
         color: '#C6A75E',
     },
+   {
+        id: 6,
+        title: 'MaidMatch Application',
+        description: 'Mobile and Web app for linking homeowners with domestic workers.',
+        tech: ['React Native', 'React JS', 'Django', 'PostgreSQL'],
+        color: '#7A8F7A',
+    }, 
 ]
 
 export const websites = [

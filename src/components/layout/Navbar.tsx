@@ -62,7 +62,7 @@ export default function Navbar() {
 
                 {/* CTA */}
                 <a
-                    href="/Cedric_Ahumuza_CV.pdf"
+                    href="https://drive.google.com/file/d/1K5JZkpHVrgJqiZ3X60nDuHBI1YvbOecD/view?usp=sharing"
                     download
                     className="hidden md:inline-flex btn-primary text-sm py-2 px-5"
                 >
@@ -100,7 +100,7 @@ export default function Navbar() {
                                 </li>
                             ))}
                             <li>
-                                <a href="/Cedric_Ahumuza_CV.pdf" download className="btn-primary text-sm py-2 inline-flex">
+                                <a href="https://drive.google.com/file/d/1K5JZkpHVrgJqiZ3X60nDuHBI1YvbOecD/view?usp=sharing" download className="btn-primary text-sm py-2 inline-flex">
                                     Download Resume
                                 </a>
                             </li>
