@@ -146,27 +146,27 @@ export const projects = [
 ]
 
 export const websites = [
-    { id: 1, name: 'Mtunda Uganda', url: 'https://www.mtunda.ug', description: 'E-commerce platform' },
-    { id: 2, name: 'Mtunda Global', url: 'https://www.mtunda.com', description: 'Multi-country trading platform' },
-    { id: 3, name: 'Ortus Advocates', url: 'https://www.ortusadvocates.com', description: 'Legal services firm' },
-    { id: 4, name: 'E&E Advocates', url: 'https://www.e-eadvocates.com', description: 'Legal firm website' },
-    { id: 5, name: 'KAA Uganda', url: 'https://www.kaa.co.ug', description: 'Association website' },
-    { id: 6, name: 'WGE', url: 'https://www.wge.com', description: 'Corporate platform' },
-    { id: 7, name: 'Apex Technologies', url: 'https://apextechnologies.netlify.app', description: 'Tech company site' },
-    { id: 8, name: 'Chrona Forge', url: 'https://www.chrona-forge.com', description: 'Digital product' },
-    { id: 9, name: 'Vase of Transformation', url: 'https://www.vaseoftransformation.org', description: 'Non-profit organization' },
+    { id: 1, name: 'Mtunda Uganda', url: 'https://www.mtunda.ug', description: 'E-commerce platform', image: '/images/project-1.jpg' },
+    { id: 2, name: 'Mtunda Global', url: 'https://www.mtunda.com', description: 'E-commerce platform', image: '/images/project-2.png' },
+    { id: 3, name: 'Ortus Advocates', url: 'https://www.ortusadvocates.com', description: 'Law Firm Website', image: '/images/project-3.jpg' },
+    { id: 4, name: 'E&E Advocates', url: 'https://www.e-eadvocates.com', description: 'Law Firm Website', image: '/images/project-4.png' },
+    { id: 5, name: 'KAA Uganda', url: 'https://www.kaa.co.ug', description: 'Law Firm Website', image: '/images/project-5.png' },
+    { id: 6, name: 'WGE', url: 'https://www.wge.com', description: 'Construction Company Website', image: '/images/project-6.png' },
+    { id: 7, name: 'Apex Technologies', url: 'https://apextechnologies.netlify.app', description: 'Tech company site', image: '/images/project-7.png' },
+    { id: 8, name: 'Chrona Forge', url: 'https://www.chrona-forge.com', description: 'Digital Agency Website', image: '/images/project-8.jpg' },
+    { id: 9, name: 'Vase of Transformation', url: 'https://www.vaseoftransformation.org', description: 'Non-profit organization Website', image: '/images/project-9.png' },
 ]
 
 export const skills = [
     {
         category: 'Backend',
         icon: '⚙️',
-        items: ['Python', 'Django', 'Flask', 'Authentication Systems', 'Database Design', 'REST APIs'],
+        items: ['Python', 'Django', 'Flask', 'Database Design', 'REST APIs'],
     },
     {
         category: 'Frontend',
         icon: '🎨',
-        items: ['React JS', 'Next JS', 'TypeScript', 'HTML5', 'CSS3', 'Responsive Design', 'State Management'],
+        items: ['React JS', 'Next JS', 'TypeScript', 'HTML5', 'Tailwind CSS', 'Responsive Design', 'State Management'],
     },
     {
         category: 'Cloud & DevOps',

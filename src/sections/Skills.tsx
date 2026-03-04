@@ -1,6 +1,26 @@
 import { motion } from 'framer-motion'
 import { skills } from '@/lib/data'
 
+function SkillTag({ name, index }: { name: string; index: number }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.05, type: 'spring', stiffness: 100 }}
+            whileHover={{ y: -4, scale: 1.05 }}
+            className="group relative cursor-default"
+        >
+            <div className="absolute inset-0 bg-gradient-to-r from-burnt-orange to-gold opacity-0 group-hover:opacity-100 rounded-lg blur-md transition-opacity duration-300" />
+            <div className="relative px-4 py-2 bg-charcoal border border-white/10 group-hover:border-burnt-orange/50 rounded-lg flex items-center justify-center transition-colors duration-300">
+                <span className="text-sm font-semibold text-offwhite/70 group-hover:text-offwhite transition-colors duration-300">
+                    {name}
+                </span>
+            </div>
+        </motion.div>
+    )
+}
+
 function SkillCategory({ category, index }: { category: typeof skills[0]; index: number }) {
     return (
         <motion.div
@@ -8,24 +28,20 @@ function SkillCategory({ category, index }: { category: typeof skills[0]; index:
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: index * 0.08 }}
-            className="glass-card p-6 hover:border-burnt-orange/20 transition-all duration-300 group"
+            className="glass-card p-6 border border-white/5 hover:border-burnt-orange/20 transition-all duration-300 group h-full flex flex-col"
         >
-            <div className="flex items-center gap-3 mb-5">
-                <span className="text-2xl">{category.icon}</span>
-                <h3 className="font-bold text-offwhite group-hover:text-burnt-orange transition-colors duration-300">
+            <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-graphite border border-white/10 flex items-center justify-center group-hover:border-burnt-orange/30 transition-colors">
+                    <span className="text-xl">{category.icon}</span>
+                </div>
+                <h3 className="font-bold text-lg text-offwhite group-hover:text-burnt-orange transition-colors duration-300">
                     {category.category}
                 </h3>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-                {category.items.map((item) => (
-                    <motion.span
-                        key={item}
-                        whileHover={{ scale: 1.08, borderColor: 'rgba(228,87,46,0.5)', color: '#F5F5F2' }}
-                        className="px-3 py-1 text-xs font-medium rounded-full bg-charcoal border border-white/10 text-offwhite/60 cursor-default transition-colors duration-200"
-                    >
-                        {item}
-                    </motion.span>
+            <div className="flex flex-wrap gap-2.5 mt-auto">
+                {category.items.map((item, i) => (
+                    <SkillTag key={item} name={item} index={i} />
                 ))}
             </div>
         </motion.div>

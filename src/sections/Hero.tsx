@@ -199,7 +199,7 @@ export default function Hero() {
                             {/* Image */}
                             <div className="relative w-full h-full rounded-3xl overflow-hidden border border-burnt-orange/30 shadow-2xl">
                                 <img
-                                    src="/my-avatar.png"
+                                    src="/profile.jpg"
                                     alt="Cedric Ahumuza"
                                     className="w-full h-full object-cover"
                                     onError={(e) => {
@@ -207,7 +207,7 @@ export default function Hero() {
                                         target.style.display = 'none'
                                         if (target.parentElement) {
                                             target.parentElement.style.background = 'linear-gradient(135deg, #1C1C1C, #2a2a2a)'
-                                            target.parentElement.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><span style="font-size:80px;font-weight:900;color:#E4572E;font-family:Inter,sans-serif">CA</span></div>`
+                                            target.parentElement.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px"><span style="font-size:16px;font-weight:600;color:#E4572E;font-family:Inter,sans-serif">Please save your attached image as "profile.jpg" in the "public" folder!</span></div>`
                                         }
                                     }}
                                 />

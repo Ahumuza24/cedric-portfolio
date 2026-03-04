@@ -24,11 +24,26 @@ function WebsiteCard({ site, index }: { site: typeof websites[0]; index: number 
             />
 
             <div className="relative z-10">
+                <div className="w-full h-32 mb-4 rounded-lg overflow-hidden border border-white/10 relative group-hover:border-burnt-orange/30 transition-colors duration-300 bg-black/40">
+                    {/* Placeholder while loading or if it fails */}
+                    <div className="absolute inset-0 flex items-center justify-center -z-10">
+                        <Globe size={24} className="text-white/10 animate-pulse" />
+                    </div>
+                    {/* Live Snapshot API */}
+                    <img
+                        src={`https://image.thum.io/get/width/600/crop/400/png/${site.url}`}
+                        alt={`${site.name} Preview`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 bg-white"
+                        loading="lazy"
+                    />
+                    {/* Dark overlay that fades on hover */}
+                    <div className="absolute inset-0 bg-charcoal/40 group-hover:bg-transparent transition-colors duration-300" />
+                </div>
                 <div className="flex items-center gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-lg bg-burnt-orange/10 border border-burnt-orange/20 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-burnt-orange/10 border border-burnt-orange/20 flex items-center justify-center shrink-0">
                         <Globe size={14} className="text-burnt-orange" />
                     </div>
-                    <h3 className="font-bold text-offwhite text-sm group-hover:text-burnt-orange transition-colors">
+                    <h3 className="font-bold text-offwhite text-sm group-hover:text-burnt-orange transition-colors truncate">
                         {site.name}
                     </h3>
                 </div>
