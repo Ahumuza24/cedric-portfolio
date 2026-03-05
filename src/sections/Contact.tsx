@@ -1,9 +1,18 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Github, Copy, Check, Send } from 'lucide-react'
 import toast from 'react-hot-toast'
+import emailjs from '@emailjs/browser'
+
+// ─── EmailJS credentials ──────────────────────────────────────────────────────
+// Sign up free at https://www.emailjs.com/, then replace the three values below.
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID'
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID'
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY'
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function Contact() {
+    const formRef = useRef<HTMLFormElement>(null)
     const [form, setForm] = useState({ name: '', email: '', message: '' })
     const [errors, setErrors] = useState<Record<string, string>>({})
     const [sending, setSending] = useState(false)
@@ -24,11 +33,21 @@ export default function Contact() {
         if (Object.keys(errs).length) { setErrors(errs); return }
         setErrors({})
         setSending(true)
-        // Simulate async send
-        await new Promise((r) => setTimeout(r, 1500))
-        setSending(false)
-        setForm({ name: '', email: '', message: '' })
-        toast.success('Message sent! I\'ll get back to you soon.', { duration: 4000 })
+        try {
+            await emailjs.sendForm(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                formRef.current!,
+                EMAILJS_PUBLIC_KEY,
+            )
+            setForm({ name: '', email: '', message: '' })
+            toast.success("Message sent! I'll get back to you soon. 🚀", { duration: 4000 })
+        } catch (err) {
+            console.error('EmailJS error:', err)
+            toast.error('Failed to send message. Please try again or email me directly.', { duration: 5000 })
+        } finally {
+            setSending(false)
+        }
     }
 
     const copyEmail = () => {
@@ -40,7 +59,7 @@ export default function Contact() {
 
     const contactInfo = [
         { icon: MapPin, label: 'Location', value: 'Luteete, Gayaza Road, Kampala, Uganda' },
-        { icon: Phone, label: 'Phone', value: '+256703103834', href: 'tel:+256703103834' },
+        { icon: Phone, label: 'Phone', value: '+256703103834', href: 'https://wa.me/256703103834' },
         { icon: Mail, label: 'Email', value: 'ahumuzacedric@gmail.com', href: 'mailto:ahumuzacedric@gmail.com' },
         { icon: Github, label: 'GitHub', value: 'github.com/Ahumuza24', href: 'https://github.com/Ahumuza24' },
     ]
@@ -116,7 +135,7 @@ export default function Contact() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.7, delay: 0.1 }}
                     >
-                        <form onSubmit={handleSubmit} className="glass-card p-8 space-y-6">
+                        <form ref={formRef} onSubmit={handleSubmit} className="glass-card p-8 space-y-6">
                             {/* Name */}
                             <div>
                                 <label className="block text-xs font-semibold text-offwhite/50 mb-2 uppercase tracking-wider">
@@ -124,6 +143,7 @@ export default function Contact() {
                                 </label>
                                 <input
                                     id="contact-name"
+                                    name="from_name"
                                     type="text"
                                     value={form.name}
                                     onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -141,6 +161,7 @@ export default function Contact() {
                                 </label>
                                 <input
                                     id="contact-email"
+                                    name="from_email"
                                     type="email"
                                     value={form.email}
                                     onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -158,6 +179,7 @@ export default function Contact() {
                                 </label>
                                 <textarea
                                     id="contact-message"
+                                    name="message"
                                     value={form.message}
                                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                                     rows={5}

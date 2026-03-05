@@ -103,7 +103,7 @@ export default function Hero() {
                             <motion.a
                                 whileHover={{ scale: 1.04 }}
                                 whileTap={{ scale: 0.97 }}
-                                href="/Cedric_Ahumuza_CV.pdf"
+                                href="https://drive.google.com/file/d/1K5JZkpHVrgJqiZ3X60nDuHBI1YvbOecD/view?usp=sharing"
                                 download
                                 className="btn-outline"
                             >
@@ -141,12 +141,7 @@ export default function Hero() {
                             >
                                 <Mail size={16} /> ahumuzacedric@gmail.com
                             </a>
-                            <a
-                                href="https://wa.me/256703103834"
-                                className="flex items-center gap-2 text-xs text-offwhite/40 hover:text-burnt-orange transition-colors"
-                            >
-                                <Phone size={16} /> +256 703 103834
-                            </a>
+                            
                         </motion.div>
                     </div>
 
