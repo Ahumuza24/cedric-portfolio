@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion'
-import { ExternalLink } from 'lucide-react'
 import { projects } from '@/lib/data'
 
 function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {

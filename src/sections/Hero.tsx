@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react'
-import { motion, useMotionValue, useTransform, AnimatePresence } from 'framer-motion'
-import { ArrowDown, Github, Mail, Download, ChevronRight, Phone } from 'lucide-react'
+import { useRef } from 'react'
+import { motion, useMotionValue, useTransform } from 'framer-motion'
+import { ArrowDown, Github, Mail, Download, ChevronRight } from 'lucide-react'
 
 const floatingTags = ['React', 'Python', 'Django', 'TypeScript', 'Node.js', 'Docker', 'Next.js', 'PostgreSQL', 'Firebase', 'Azure']
 
