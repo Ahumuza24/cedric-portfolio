@@ -158,11 +158,15 @@ export const websites = [
     { id: 3, name: 'Ortus Advocates', url: 'https://www.ortusadvocates.com', description: 'Law Firm Website' },
     { id: 4, name: 'E&E Advocates', url: 'https://www.e-eadvocates.com', description: 'Law Firm Website' },
     { id: 5, name: 'KAA Uganda', url: 'https://www.kaa.co.ug', description: 'Law Firm Website' },
-    { id: 6, name: 'WGE', url: 'https://www.wge.com', description: 'Construction Company Website' },
+    { id: 6, name: 'WGE', url: 'https://www.wge.co.ug', description: 'Construction Company Website' },
     { id: 7, name: 'Apex Technologies', url: 'https://apextechnologies.netlify.app', description: 'Tech company site' },
     { id: 8, name: 'Chrona Forge', url: 'https://www.chrona-forge.com', description: 'Digital Agency Website' },
     { id: 9, name: 'Vase of Transformation', url: 'https://www.vaseoftransformation.org', description: 'Non-profit organization Website' },
+    { id: 10, name: 'Future Fundi', url: 'https://www.futurefundi.org', description: 'E-learning Website' },
+    {id: 11, name: 'BlueBell Advocates', url: 'https://www.bluebell.legal', description: 'Law Firm Website'},
+    
 ]
+
 
 export const skills = [
     {
