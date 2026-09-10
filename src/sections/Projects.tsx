@@ -55,7 +55,7 @@ function ProjectSelector({
                 aria-hidden="true"
                 className={`h-2.5 w-2.5 rounded-full border transition-all duration-300 ${
                     selected
-                        ? 'border-cyan-200 bg-cyan-300 shadow-[0_0_18px_rgba(103,232,249,0.95)]'
+                        ? 'border-cyan-200 bg-cyan-300 shadow-[0_0_18px_rgba(228,87,46,0.95)]'
                         : 'border-white/25 group-hover:border-cyan-300/70'
                 }`}
             />
@@ -82,9 +82,9 @@ function ProjectDetails({ project, index }: { project: Project; index: number })
         >
             <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
                 <div className="absolute -right-28 -top-28 h-80 w-80 rounded-full border border-cyan-300/15" />
-                <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full border border-blue-500/20" />
+                <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full border border-cyan-400/20" />
                 <div className="absolute right-[4.5rem] top-[4.5rem] h-3 w-3 rounded-full bg-[#ff9f68] shadow-[0_0_26px_rgba(255,159,104,0.9)]" />
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(103,232,249,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.025)_1px,transparent_1px)] bg-[size:34px_34px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(228,87,46,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(228,87,46,0.025)_1px,transparent_1px)] bg-[size:34px_34px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
             </div>
 
             <motion.div
@@ -109,7 +109,7 @@ function ProjectDetails({ project, index }: { project: Project; index: number })
                             aria-hidden="true"
                             initial={shouldReduceMotion ? false : { width: 0 }}
                             animate={{ width: 56 }}
-                            className="mb-6 h-px bg-gradient-to-r from-cyan-300 to-blue-500"
+                            className="mb-6 h-px bg-gradient-to-r from-cyan-300 to-cyan-500"
                         />
                         <h3 className="max-w-xl text-3xl font-black leading-[1.05] tracking-[-0.04em] text-white sm:text-5xl">
                             {project.title}
@@ -179,7 +179,7 @@ export default function Projects() {
     return (
         <section id="projects" className="relative overflow-hidden bg-[#070a12] py-24 lg:py-32">
             <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
-                <div className="absolute left-[-18rem] top-1/3 h-[38rem] w-[38rem] rounded-full bg-blue-700/10 blur-[120px]" />
+                <div className="absolute left-[-18rem] top-1/3 h-[38rem] w-[38rem] rounded-full bg-cyan-500/10 blur-[120px]" />
                 <div className="absolute right-[-16rem] top-0 h-[34rem] w-[34rem] rounded-full bg-cyan-400/[0.07] blur-[120px]" />
             </div>
 

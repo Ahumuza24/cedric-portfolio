@@ -10,6 +10,53 @@ const signals = [
   { code: '03', label: 'Digital products' },
 ]
 
+const NAME_LINES = ['Cedric', 'Ahumuza'] as const
+const TYPEWRITER_START_DELAY = 350
+const TYPEWRITER_CHAR_DELAY = 130
+const TYPEWRITER_LINE_PAUSE = 420
+
+function useTypewriter(lines: readonly string[], enabled: boolean) {
+  const [counts, setCounts] = useState<number[]>(() =>
+    enabled ? lines.map(() => 0) : lines.map((line) => line.length),
+  )
+  const [activeLine, setActiveLine] = useState(() => (enabled ? -1 : lines.length - 1))
+  const [isDone, setIsDone] = useState(() => !enabled)
+
+  useEffect(() => {
+    if (!enabled) return
+
+    const timeouts: ReturnType<typeof setTimeout>[] = []
+    let elapsed = TYPEWRITER_START_DELAY
+
+    lines.forEach((line, lineIndex) => {
+      for (let charIndex = 1; charIndex <= line.length; charIndex++) {
+        const revealCount = charIndex
+        timeouts.push(
+          setTimeout(() => {
+            setActiveLine(lineIndex)
+            setCounts((prev) => {
+              const next = [...prev]
+              next[lineIndex] = revealCount
+              return next
+            })
+          }, elapsed),
+        )
+        elapsed += TYPEWRITER_CHAR_DELAY
+      }
+      elapsed += TYPEWRITER_LINE_PAUSE
+    })
+    timeouts.push(setTimeout(() => setIsDone(true), elapsed))
+
+    return () => timeouts.forEach(clearTimeout)
+  }, [lines, enabled])
+
+  return {
+    displayedLines: lines.map((line, i) => line.slice(0, counts[i])),
+    activeLine,
+    isDone,
+  }
+}
+
 export default function Hero() {
   const reducedMotion = useReducedMotion() ?? true
   const [webglSupported, setWebglSupported] = useState(false)
@@ -23,6 +70,7 @@ export default function Hero() {
   }, [])
 
   const renderMode = getHeroRenderMode({ reducedMotion, webglSupported })
+  const { displayedLines, activeLine, isDone } = useTypewriter(NAME_LINES, !reducedMotion)
   const enter = (delay = 0) => reducedMotion
     ? { initial: false as const }
     : {
@@ -33,8 +81,8 @@ export default function Hero() {
 
   return (
     <section id="hero" className="relative isolate flex min-h-screen items-center overflow-hidden bg-[#05070b] pt-20 text-[#f4f7fb]">
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_72%_36%,rgba(37,99,235,0.22),transparent_34%),radial-gradient(circle_at_18%_82%,rgba(34,211,238,0.10),transparent_28%),linear-gradient(135deg,#05070b_0%,#080d17_55%,#05070b_100%)]" />
-      <div className="absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(103,232,249,0.09)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.09)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_72%_36%,rgba(228,87,46,0.22),transparent_34%),radial-gradient(circle_at_18%_82%,rgba(228,87,46,0.10),transparent_28%),linear-gradient(135deg,#05070b_0%,#080d17_55%,#05070b_100%)]" />
+      <div className="absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(228,87,46,0.09)_1px,transparent_1px),linear-gradient(90deg,rgba(228,87,46,0.09)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
 
       <div className="section-container relative z-10 w-full py-16 lg:py-24">
         <div className="grid min-w-0 items-center gap-14 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-8">
@@ -45,9 +93,19 @@ export default function Hero() {
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-orange-400 shadow-[0_0_12px_rgba(251,146,60,0.9)]" />
             </motion.div>
 
-            <motion.h1 {...enter(0.08)} className="max-w-full font-display text-[clamp(3.05rem,15vw,8.6rem)] font-black uppercase leading-[0.8] tracking-[-0.075em]">
-              <span className="block text-white">Cedric</span>
-              <span className="block pr-3 text-cyan-300">Ahumuza</span>
+            <motion.h1 {...enter(0.08)} aria-label="Cedric Ahumuza" className="max-w-full font-display text-[clamp(2.05rem,12vw,6.6rem)] font-black uppercase leading-[0.8] tracking-[-0.02em]">
+              <span aria-hidden="true" className="block whitespace-nowrap text-white">
+                {displayedLines[0]}
+                {!reducedMotion && activeLine === 0 && !isDone && (
+                  <span className="typewriter-caret ml-1 inline-block h-[0.72em] w-[0.06em] translate-y-[0.06em] bg-white align-middle" />
+                )}
+              </span>
+              <span aria-hidden="true" className="block whitespace-nowrap pr-3 text-cyan-300">
+                {displayedLines[1]}
+                {!reducedMotion && (activeLine === 1 || isDone) && (
+                  <span className="typewriter-caret ml-1 inline-block h-[0.72em] w-[0.06em] translate-y-[0.06em] bg-cyan-300 align-middle" />
+                )}
+              </span>
             </motion.h1>
 
             <motion.p {...enter(0.16)} className="mt-8 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
@@ -87,7 +145,7 @@ export default function Hero() {
 
           <motion.div {...enter(0.14)} className="relative mx-auto aspect-[4/5] w-full min-w-0 max-w-[520px] lg:ml-auto">
             <HeroVisual mode={renderMode} />
-            <div className="pointer-events-none absolute inset-[9%_9%_7%_13%] rotate-3 rounded-[2.25rem] border border-cyan-300/25 bg-gradient-to-br from-blue-600/20 via-transparent to-orange-400/10 shadow-[0_0_80px_rgba(37,99,235,0.18)] backdrop-blur-[2px]" />
+            <div className="pointer-events-none absolute inset-[9%_9%_7%_13%] rotate-3 rounded-[2.25rem] border border-cyan-300/25 bg-gradient-to-br from-cyan-400/20 via-transparent to-orange-400/10 shadow-[0_0_80px_rgba(228,87,46,0.18)] backdrop-blur-[2px]" />
             <div className="pointer-events-none absolute inset-[14%_13%_12%_18%] overflow-hidden rounded-[1.8rem] border border-white/15 bg-[#0b1220] shadow-2xl">
               {profileAvailable ? (
                 <img
@@ -101,7 +159,7 @@ export default function Hero() {
                   onError={() => setProfileAvailable(false)}
                 />
               ) : (
-                <div className="flex h-full items-center justify-center bg-gradient-to-br from-blue-950 to-[#05070b] font-display text-7xl font-black text-cyan-300" role="img" aria-label="Cedric Ahumuza initials">CA</div>
+                <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#2a0f08] to-[#05070b] font-display text-7xl font-black text-cyan-300" role="img" aria-label="Cedric Ahumuza initials">CA</div>
               )}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#05070b]/80 via-transparent to-cyan-300/5" />
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 font-mono text-[9px] uppercase tracking-[0.2em] text-cyan-200/75">

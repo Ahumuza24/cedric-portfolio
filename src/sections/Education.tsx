@@ -11,8 +11,8 @@ export default function Education() {
             aria-labelledby="education-heading"
             className="relative overflow-hidden py-24 lg:py-36"
         >
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#3266ff]/60 to-transparent" />
-            <div className="pointer-events-none absolute -right-32 top-1/3 h-96 w-96 rounded-full bg-[#3266ff]/10 blur-[120px]" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e4572e]/60 to-transparent" />
+            <div className="pointer-events-none absolute -right-32 top-1/3 h-96 w-96 rounded-full bg-[#e4572e]/10 blur-[120px]" />
 
             <div className="section-container relative">
                 <motion.header
@@ -23,8 +23,8 @@ export default function Education() {
                     className="mb-14 flex flex-col justify-between gap-8 md:flex-row md:items-end"
                 >
                     <div>
-                        <div className="mb-6 flex items-center gap-3 font-mono text-[0.68rem] font-bold uppercase tracking-[0.28em] text-[#00e5ff]">
-                            <span className="h-px w-9 bg-[#00e5ff]" aria-hidden="true" />
+                        <div className="mb-6 flex items-center gap-3 font-mono text-[0.68rem] font-bold uppercase tracking-[0.28em] text-[#e4572e]">
+                            <span className="h-px w-9 bg-[#e4572e]" aria-hidden="true" />
                             Learning archive
                         </div>
                         <h2
@@ -32,15 +32,15 @@ export default function Education() {
                             className="font-display text-5xl font-bold leading-[0.94] tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl"
                         >
                             Knowledge,<br />
-                            <span className="text-[#00e5ff]">
+                            <span className="text-[#e4572e]">
                                 compiled.
                             </span>
                         </h2>
                     </div>
                     <div className="flex items-center gap-3 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-white/35">
                         <span className="relative flex h-2 w-2" aria-hidden="true">
-                            <span className="absolute inline-flex h-full w-full rounded-full bg-[#00e5ff] opacity-50 motion-safe:animate-ping" />
-                            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00e5ff]" />
+                            <span className="absolute inline-flex h-full w-full rounded-full bg-[#e4572e] opacity-50 motion-safe:animate-ping" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#e4572e]" />
                         </span>
                         Academic records
                     </div>
@@ -67,7 +67,7 @@ export default function Education() {
                                 className="group grid gap-5 px-4 py-7 transition-colors hover:bg-white/[0.025] sm:px-5 md:grid-cols-[5.5rem_1fr_10rem] md:items-center md:gap-6"
                             >
                                 <div className="flex items-center gap-3 md:block">
-                                    <span className="grid h-12 w-12 place-items-center rounded-2xl border border-[#3266ff]/25 bg-[#3266ff]/10 text-[#67a2ff] transition-colors group-hover:border-[#00e5ff]/35 group-hover:text-[#00e5ff]">
+                                    <span className="grid h-12 w-12 place-items-center rounded-2xl border border-[#e4572e]/25 bg-[#e4572e]/10 text-[#e4572e] transition-colors group-hover:border-[#e4572e]/35 group-hover:text-[#e4572e]">
                                         {index === 0 ? <GraduationCap size={21} aria-hidden="true" /> : <Award size={20} aria-hidden="true" />}
                                     </span>
                                     <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-white/30 md:mt-3 md:block">
@@ -92,9 +92,9 @@ export default function Education() {
                                     <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[0.58rem] font-bold uppercase tracking-[0.16em] ${
                                         edu.current
                                             ? 'border-[#ff9d5c]/30 bg-[#ff9d5c]/10 text-[#ffb47f]'
-                                            : 'border-[#00e5ff]/25 bg-[#00e5ff]/10 text-[#00e5ff]'
+                                            : 'border-[#e4572e]/25 bg-[#e4572e]/10 text-[#e4572e]'
                                     }`}>
-                                        <span className={`h-1.5 w-1.5 rounded-full ${edu.current ? 'bg-[#ff9d5c]' : 'bg-[#00e5ff]'}`} aria-hidden="true" />
+                                        <span className={`h-1.5 w-1.5 rounded-full ${edu.current ? 'bg-[#ff9d5c]' : 'bg-[#e4572e]'}`} aria-hidden="true" />
                                         {edu.current ? 'In progress' : 'Completed'}
                                     </span>
                                 </div>

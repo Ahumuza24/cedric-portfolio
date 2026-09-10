@@ -71,14 +71,14 @@ export default function Navbar() {
       }`}
     >
       <nav className="section-container flex h-[72px] items-center justify-between lg:h-20" aria-label="Primary navigation">
-        <a href="#hero" className="group flex items-center gap-3" onClick={() => setOpen(false)}>
-          <span className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-xl border border-cyan/30 bg-cyan/[0.07] font-mono text-xs font-bold text-cyan transition group-hover:border-cyan/70 group-hover:shadow-[0_0_28px_rgba(110,243,255,.24)]">
-            CA
+        <a href="#hero" aria-label="Cedric Ahumuza" className="group flex items-center gap-3" onClick={() => setOpen(false)}>
+          <span className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-xl border border-cyan/30 bg-cyan/[0.07] transition group-hover:border-cyan/70 group-hover:shadow-[0_0_28px_rgba(228,87,46,.24)]">
+            <img src="/cedric_logo.svg" alt="" className="h-6 w-6" />
             <span className="absolute inset-x-1 bottom-1 h-px bg-gradient-to-r from-transparent via-cyan to-transparent" />
           </span>
           <span className="hidden sm:block">
             <span className="block text-sm font-bold tracking-[-0.03em] text-offwhite">Cedric Ahumuza</span>
-            <span className="block font-mono text-[8px] uppercase tracking-[0.18em] text-offwhite/35">Creative technologist</span>
+            <span className="block font-mono text-[8px] uppercase tracking-[0.18em] text-offwhite/35">Software Engineer</span>
           </span>
         </a>
 

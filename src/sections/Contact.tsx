@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowUpRight, Check, Copy, Github, Mail, MapPin, Phone, Send } from 'lucide-react'
 import emailjs from '@emailjs/browser'
 import toast from 'react-hot-toast'
@@ -40,6 +40,7 @@ const contactInfo = [
 ]
 
 export default function Contact() {
+  const reduceMotion = useReducedMotion()
   const formRef = useRef<HTMLFormElement>(null)
   const [form, setForm] = useState<ContactForm>(emptyForm)
   const [errors, setErrors] = useState<ContactErrors>({})
@@ -87,7 +88,13 @@ export default function Contact() {
     <section id="contact" className="section-shell border-t border-white/[0.06]">
       <div className="pointer-events-none absolute left-1/2 top-0 h-[36rem] w-[60rem] -translate-x-1/2 rounded-full bg-cyan/[0.07] blur-[140px]" />
       <div className="section-container relative z-10">
-        <div className="mb-14 flex flex-col justify-between gap-8 lg:mb-20 lg:flex-row lg:items-end">
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: reduceMotion ? 0 : 0.6 }}
+          className="mb-14 flex flex-col justify-between gap-8 lg:mb-20 lg:flex-row lg:items-end"
+        >
           <div>
             <div className="mb-5 flex items-center gap-3">
               <span className="font-mono text-[10px] text-cyan/45">06</span>
@@ -102,10 +109,16 @@ export default function Contact() {
           <p className="max-w-sm text-sm leading-7 text-offwhite/48">
             A product idea, a technical challenge, or a team that needs momentum—send the coordinates.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr]">
-          <div className="system-panel hud-corners flex flex-col justify-between overflow-hidden p-6 sm:p-8">
+          <motion.div
+            initial={reduceMotion ? false : { opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : 0.1 }}
+            className="system-panel hud-corners flex flex-col justify-between overflow-hidden p-6 sm:p-8"
+          >
             <div>
               <div className="mb-10 flex items-center justify-between border-b border-white/[0.08] pb-5">
                 <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-offwhite/35">Open channel</span>
@@ -136,9 +149,18 @@ export default function Contact() {
               <span>{copied ? 'Copied to clipboard' : 'Copy email address'}</span>
               {copied ? <Check size={14} className="text-sage" /> : <Copy size={14} />}
             </button>
-          </div>
+          </motion.div>
 
-          <form ref={formRef} onSubmit={handleSubmit} aria-label="Contact form" className="system-panel relative overflow-hidden p-6 sm:p-8 lg:p-10">
+          <motion.form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            aria-label="Contact form"
+            initial={reduceMotion ? false : { opacity: 0, x: 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : 0.18 }}
+            className="system-panel relative overflow-hidden p-6 sm:p-8 lg:p-10"
+          >
             <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 bg-cobalt/10 blur-[70px]" />
             <div className="relative grid gap-6 sm:grid-cols-2">
               <Field label="Name" id="contact-name" error={errors.name}>
@@ -163,13 +185,20 @@ export default function Contact() {
                 </motion.button>
               </div>
             </div>
-          </form>
+          </motion.form>
         </div>
 
-        <a href="mailto:ahumuzacedric@gmail.com" className="group mt-16 flex items-center justify-between border-y border-white/[0.07] py-6 text-offwhite/45 transition hover:text-cyan">
+        <motion.a
+          href="mailto:ahumuzacedric@gmail.com"
+          initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: reduceMotion ? 0 : 0.5 }}
+          className="group mt-16 flex items-center justify-between border-y border-white/[0.07] py-6 text-offwhite/45 transition hover:text-cyan"
+        >
           <span className="font-mono text-[10px] uppercase tracking-[0.18em]">Prefer direct transmission?</span>
           <span className="flex items-center gap-2 text-sm font-bold">Email Cedric <ArrowUpRight size={15} className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span>
-        </a>
+        </motion.a>
       </div>
     </section>
   )

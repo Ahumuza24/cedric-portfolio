@@ -16,7 +16,7 @@ export default function LoadingScreen() {
                     transition={{ duration: 0.5 }}
                 >
                     <div className="grid h-16 w-16 place-items-center rounded-2xl border border-cyan/30 bg-cyan/[0.07]">
-                        <span className="font-mono text-sm font-bold tracking-[-0.06em] text-cyan">CA</span>
+                        <img src="/cedric_logo.svg" alt="Cedric Ahumuza" className="h-9 w-9" />
                     </div>
                     <motion.div
                         className="absolute inset-0 rounded-2xl border border-cyan/60"

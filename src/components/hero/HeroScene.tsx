@@ -34,18 +34,18 @@ function OrbitalNetwork() {
 
   return (
     <group ref={group}>
-      <Line points={orbit} color="#2563eb" opacity={0.3} transparent lineWidth={0.6} />
+      <Line points={orbit} color="#e4572e" opacity={0.3} transparent lineWidth={0.6} />
       <group rotation={[0.25, 0.15, -0.45]}>
-        <Line points={orbit} color="#22d3ee" opacity={0.16} transparent lineWidth={0.5} />
+        <Line points={orbit} color="#e4572e" opacity={0.16} transparent lineWidth={0.5} />
       </group>
       {edges.map(([from, to]) => (
-        <Line key={`${from}-${to}`} points={[nodes[from], nodes[to]]} color="#22d3ee" opacity={0.42} transparent lineWidth={0.8} />
+        <Line key={`${from}-${to}`} points={[nodes[from], nodes[to]]} color="#e4572e" opacity={0.42} transparent lineWidth={0.8} />
       ))}
       {nodes.map((position, index) => (
         <Float key={index} speed={1.1 + (index % 3) * 0.2} floatIntensity={0.18}>
           <mesh position={position}>
             <sphereGeometry args={[index % 3 === 0 ? 0.08 : 0.045, 16, 16]} />
-            <meshBasicMaterial color={index % 3 === 0 ? '#fb923c' : '#67e8f9'} toneMapped={false} />
+            <meshBasicMaterial color={index % 3 === 0 ? '#fb923c' : '#e4572e'} toneMapped={false} />
           </mesh>
         </Float>
       ))}
@@ -58,7 +58,7 @@ export default function HeroScene() {
     <Canvas camera={{ position: [0, 0, 6.5], fov: 46 }} dpr={[1, 1.5]} gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}>
       <ambientLight intensity={0.5} />
       <Stars radius={22} depth={18} count={650} factor={2} fade speed={0.25} />
-      <Sparkles count={45} scale={[7, 5, 3]} size={1.4} speed={0.18} color="#67e8f9" />
+      <Sparkles count={45} scale={[7, 5, 3]} size={1.4} speed={0.18} color="#e4572e" />
       <OrbitalNetwork />
     </Canvas>
   )

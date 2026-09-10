@@ -57,7 +57,7 @@ function SkillCard({
     const rotateY = useSpring(useTransform(pointerX, [0, 1], [-7, 7]), springConfig)
     const spotlightX = useTransform(pointerX, (v) => `${v * 100}%`)
     const spotlightY = useTransform(pointerY, (v) => `${v * 100}%`)
-    const spotlight = useMotionTemplate`radial-gradient(280px circle at ${spotlightX} ${spotlightY}, rgba(103,232,249,0.14), transparent 70%)`
+    const spotlight = useMotionTemplate`radial-gradient(280px circle at ${spotlightX} ${spotlightY}, rgba(228,87,46,0.14), transparent 70%)`
 
     function handlePointerMove(event: React.PointerEvent<HTMLElement>) {
         if (shouldReduceMotion) return
@@ -136,8 +136,8 @@ export default function Skills() {
     return (
         <section id="skills" className="relative overflow-hidden bg-[#050811] py-24 lg:py-32">
             <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_20%,rgba(37,99,235,0.12),transparent_34%),radial-gradient(circle_at_12%_80%,rgba(34,211,238,0.08),transparent_30%)]" />
-                <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(103,232,249,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.025)_1px,transparent_1px)] [background-size:64px_64px]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_20%,rgba(228,87,46,0.12),transparent_34%),radial-gradient(circle_at_12%_80%,rgba(228,87,46,0.08),transparent_30%)]" />
+                <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(228,87,46,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(228,87,46,0.025)_1px,transparent_1px)] [background-size:64px_64px]" />
             </div>
 
             <div className="section-container relative">
@@ -194,7 +194,7 @@ export default function Skills() {
                                         <motion.span
                                             layoutId="skills-filter-active"
                                             aria-hidden="true"
-                                            className="absolute inset-0 -z-10 rounded-full bg-cyan-300 shadow-[0_0_24px_rgba(103,232,249,0.18)]"
+                                            className="absolute inset-0 -z-10 rounded-full bg-cyan-300 shadow-[0_0_24px_rgba(228,87,46,0.18)]"
                                             transition={shouldReduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 380, damping: 32 }}
                                         />
                                     )}

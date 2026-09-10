@@ -26,7 +26,7 @@ export default function App() {
                     style: {
                         background: '#0B101C',
                         color: '#F4F7FF',
-                        border: '1px solid rgba(110,243,255,0.22)',
+                        border: '1px solid rgba(228,87,46,0.22)',
                         borderRadius: '14px',
                         fontFamily: 'Space Mono, monospace',
                         fontSize: '12px',

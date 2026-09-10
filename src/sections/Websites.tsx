@@ -48,7 +48,7 @@ function WebsiteCard({
     const rotateY = useSpring(useTransform(pointerX, [0, 1], [-6, 6]), springConfig)
     const spotlightX = useTransform(pointerX, (v) => `${v * 100}%`)
     const spotlightY = useTransform(pointerY, (v) => `${v * 100}%`)
-    const spotlight = useMotionTemplate`radial-gradient(280px circle at ${spotlightX} ${spotlightY}, rgba(0,229,255,0.14), transparent 70%)`
+    const spotlight = useMotionTemplate`radial-gradient(280px circle at ${spotlightX} ${spotlightY}, rgba(228,87,46,0.14), transparent 70%)`
 
     function handlePointerMove(event: React.PointerEvent<HTMLElement>) {
         if (reduceMotion) return
@@ -74,7 +74,7 @@ function WebsiteCard({
             onPointerEnter={() => setIsHovered(true)}
             onPointerLeave={handlePointerLeave}
             style={reduceMotion ? undefined : { rotateX, rotateY, transformPerspective: 900 }}
-            className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-[#09121c]/80 outline-none backdrop-blur-xl transition-colors duration-300 hover:border-[#00e5ff]/35 focus-visible:ring-2 focus-visible:ring-[#00e5ff] focus-visible:ring-offset-4 focus-visible:ring-offset-[#05080d]"
+            className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-[#09121c]/80 outline-none backdrop-blur-xl transition-colors duration-300 hover:border-[#e4572e]/35 focus-visible:ring-2 focus-visible:ring-[#e4572e] focus-visible:ring-offset-4 focus-visible:ring-offset-[#05080d]"
         >
             <motion.span
                 aria-hidden="true"
@@ -105,7 +105,7 @@ function WebsiteCard({
 
             <div className="relative flex flex-1 flex-col p-6">
                 <span className="mb-6 flex items-center justify-between gap-4">
-                    <span className="grid h-9 w-9 place-items-center rounded-xl border border-[#00e5ff]/20 bg-[#00e5ff]/[0.07] text-[#00e5ff] transition-colors group-hover:bg-[#00e5ff]/15" aria-hidden="true">
+                    <span className="grid h-9 w-9 place-items-center rounded-xl border border-[#e4572e]/20 bg-[#e4572e]/[0.07] text-[#e4572e] transition-colors group-hover:bg-[#e4572e]/15" aria-hidden="true">
                         <Globe2 size={16} />
                     </span>
                     <span className="font-mono text-[0.58rem] font-bold uppercase tracking-[0.2em] text-white/25">
@@ -115,7 +115,7 @@ function WebsiteCard({
 
                 <span className="mt-auto">
                     <span className="flex items-center justify-between gap-4">
-                        <span className="font-display text-xl font-bold tracking-tight text-white transition-colors group-hover:text-[#00e5ff]">
+                        <span className="font-display text-xl font-bold tracking-tight text-white transition-colors group-hover:text-[#e4572e]">
                             {site.name}
                         </span>
                         <ArrowUpRight size={18} className="shrink-0 text-white/30 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#ff9d5c]" aria-hidden="true" />
@@ -140,10 +140,10 @@ export default function Websites() {
             className="relative overflow-hidden py-24 lg:py-36"
         >
             <div
-                className="pointer-events-none absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(0,229,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(0,229,255,0.045)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_82%,transparent)]"
+                className="pointer-events-none absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(228,87,46,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(228,87,46,0.045)_1px,transparent_1px)] [background-size:42px_42px] [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_82%,transparent)]"
                 aria-hidden="true"
             />
-            <div className="pointer-events-none absolute left-1/3 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-[#00e5ff]/[0.06] blur-[110px]" />
+            <div className="pointer-events-none absolute left-1/3 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-[#e4572e]/[0.06] blur-[110px]" />
 
             <div className="section-container relative">
                 <motion.header
@@ -154,8 +154,8 @@ export default function Websites() {
                     className="mb-14 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end"
                 >
                     <div>
-                        <div className="mb-6 flex items-center gap-3 font-mono text-[0.68rem] font-bold uppercase tracking-[0.28em] text-[#00e5ff]">
-                            <span className="h-px w-9 bg-[#00e5ff]" aria-hidden="true" />
+                        <div className="mb-6 flex items-center gap-3 font-mono text-[0.68rem] font-bold uppercase tracking-[0.28em] text-[#e4572e]">
+                            <span className="h-px w-9 bg-[#e4572e]" aria-hidden="true" />
                             Deployment atlas
                         </div>
                         <h2
@@ -163,7 +163,7 @@ export default function Websites() {
                             className="max-w-4xl font-display text-5xl font-bold leading-[0.92] tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl"
                         >
                             Live on the<br />
-                            <span className="text-[#00e5ff]">
+                            <span className="text-[#e4572e]">
                                 open web.
                             </span>
                         </h2>

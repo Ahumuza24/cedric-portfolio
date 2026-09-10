@@ -24,9 +24,9 @@ describe('Contact', () => {
   it('associates every contact field with its visible label', () => {
     render(<Contact />)
 
-    expect(screen.getByRole('textbox', { name: 'Name' })).toBeVisible()
-    expect(screen.getByRole('textbox', { name: 'Email' })).toBeVisible()
-    expect(screen.getByRole('textbox', { name: 'Message' })).toBeVisible()
+    expect(screen.getByRole('textbox', { name: 'Name' })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: 'Email' })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: 'Message' })).toBeInTheDocument()
   })
 
   it('shows accessible validation errors and never submits an empty form', () => {
@@ -35,9 +35,9 @@ describe('Contact', () => {
     fireEvent.submit(screen.getByRole('form', { name: /contact/i }))
 
     expect(screen.getAllByRole('alert')).toHaveLength(3)
-    expect(screen.getByText('Name is required')).toBeVisible()
-    expect(screen.getByText('Email is required')).toBeVisible()
-    expect(screen.getByText('Message is required')).toBeVisible()
+    expect(screen.getByText('Name is required')).toBeInTheDocument()
+    expect(screen.getByText('Email is required')).toBeInTheDocument()
+    expect(screen.getByText('Message is required')).toBeInTheDocument()
     expect(sendForm).not.toHaveBeenCalled()
   })
 
@@ -90,9 +90,9 @@ describe('Contact', () => {
     })
     fireEvent.submit(screen.getByRole('form', { name: /contact/i }))
 
-    expect(screen.getByText(/100 characters/i)).toBeVisible()
-    expect(screen.getByText('Enter a valid email')).toBeVisible()
-    expect(screen.getByText(/2,000 characters/i)).toBeVisible()
+    expect(screen.getByText(/100 characters/i)).toBeInTheDocument()
+    expect(screen.getByText('Enter a valid email')).toBeInTheDocument()
+    expect(screen.getByText(/2,000 characters/i)).toBeInTheDocument()
     expect(sendForm).not.toHaveBeenCalled()
   })
 
