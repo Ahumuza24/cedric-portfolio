@@ -1,4 +1,12 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import {
+    motion,
+    useReducedMotion,
+    useMotionValue,
+    useSpring,
+    useTransform,
+    useMotionTemplate,
+} from 'framer-motion'
 import { ArrowUpRight, Globe2 } from 'lucide-react'
 import { websites } from '@/lib/data'
 
@@ -8,6 +16,118 @@ function hostname(url: string) {
     } catch {
         return url
     }
+}
+
+function liveThumbnailUrl(url: string, width = 860, height = 540) {
+    return `https://s0.wp.com/mshots/v1/${encodeURIComponent(url)}?w=${width}&h=${height}`
+}
+
+function WebsiteCard({
+    site,
+    index,
+    reduceMotion,
+}: {
+    site: (typeof websites)[number]
+    index: number
+    reduceMotion: boolean | null
+}) {
+    const [thumbnailFailed, setThumbnailFailed] = useState(false)
+    const [isHovered, setIsHovered] = useState(false)
+    const [refreshTick, setRefreshTick] = useState(0)
+
+    useEffect(() => {
+        if (refreshTick >= 2) return
+        const timer = setTimeout(() => setRefreshTick((tick) => tick + 1), 4000 + refreshTick * 4000)
+        return () => clearTimeout(timer)
+    }, [refreshTick])
+
+    const pointerX = useMotionValue(0.5)
+    const pointerY = useMotionValue(0.5)
+    const springConfig = { stiffness: 300, damping: 30 }
+    const rotateX = useSpring(useTransform(pointerY, [0, 1], [6, -6]), springConfig)
+    const rotateY = useSpring(useTransform(pointerX, [0, 1], [-6, 6]), springConfig)
+    const spotlightX = useTransform(pointerX, (v) => `${v * 100}%`)
+    const spotlightY = useTransform(pointerY, (v) => `${v * 100}%`)
+    const spotlight = useMotionTemplate`radial-gradient(280px circle at ${spotlightX} ${spotlightY}, rgba(0,229,255,0.14), transparent 70%)`
+
+    function handlePointerMove(event: React.PointerEvent<HTMLElement>) {
+        if (reduceMotion) return
+        const rect = event.currentTarget.getBoundingClientRect()
+        pointerX.set((event.clientX - rect.left) / rect.width)
+        pointerY.set((event.clientY - rect.top) / rect.height)
+    }
+
+    function handlePointerLeave() {
+        pointerX.set(0.5)
+        pointerY.set(0.5)
+        setIsHovered(false)
+    }
+
+    return (
+        <motion.a
+            href={site.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${site.name} — ${site.description} (opens in a new tab)`}
+            whileHover={reduceMotion ? undefined : { scale: 1.015 }}
+            onPointerMove={handlePointerMove}
+            onPointerEnter={() => setIsHovered(true)}
+            onPointerLeave={handlePointerLeave}
+            style={reduceMotion ? undefined : { rotateX, rotateY, transformPerspective: 900 }}
+            className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-[#09121c]/80 outline-none backdrop-blur-xl transition-colors duration-300 hover:border-[#00e5ff]/35 focus-visible:ring-2 focus-visible:ring-[#00e5ff] focus-visible:ring-offset-4 focus-visible:ring-offset-[#05080d]"
+        >
+            <motion.span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 z-10"
+                style={{ background: spotlight }}
+                animate={{ opacity: isHovered && !reduceMotion ? 1 : 0 }}
+                transition={{ duration: 0.3 }}
+            />
+
+            <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden border-b border-white/[0.08] bg-[#050b12]">
+                {!thumbnailFailed ? (
+                    <img
+                        key={refreshTick}
+                        src={liveThumbnailUrl(site.url)}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        onError={() => setThumbnailFailed(true)}
+                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+                    />
+                ) : (
+                    <div className="flex h-full items-center justify-center text-white/15">
+                        <Globe2 size={32} aria-hidden="true" />
+                    </div>
+                )}
+                <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050b12] via-transparent to-transparent" />
+            </div>
+
+            <div className="relative flex flex-1 flex-col p-6">
+                <span className="mb-6 flex items-center justify-between gap-4">
+                    <span className="grid h-9 w-9 place-items-center rounded-xl border border-[#00e5ff]/20 bg-[#00e5ff]/[0.07] text-[#00e5ff] transition-colors group-hover:bg-[#00e5ff]/15" aria-hidden="true">
+                        <Globe2 size={16} />
+                    </span>
+                    <span className="font-mono text-[0.58rem] font-bold uppercase tracking-[0.2em] text-white/25">
+                        DEP-{String(index + 1).padStart(2, '0')}
+                    </span>
+                </span>
+
+                <span className="mt-auto">
+                    <span className="flex items-center justify-between gap-4">
+                        <span className="font-display text-xl font-bold tracking-tight text-white transition-colors group-hover:text-[#00e5ff]">
+                            {site.name}
+                        </span>
+                        <ArrowUpRight size={18} className="shrink-0 text-white/30 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#ff9d5c]" aria-hidden="true" />
+                    </span>
+                    <span className="mt-2 block text-sm text-white/50">{site.description}</span>
+                    <span className="mt-5 block truncate border-t border-white/[0.07] pt-4 font-mono text-[0.62rem] uppercase tracking-[0.1em] text-white/30">
+                        {hostname(site.url)}
+                    </span>
+                </span>
+            </div>
+        </motion.a>
+    )
 }
 
 export default function Websites() {
@@ -58,46 +178,14 @@ export default function Websites() {
                         <motion.li
                             key={site.id}
                             initial={reduceMotion ? false : { opacity: 0, y: 22 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.25 }}
+                            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
                             transition={{
                                 duration: reduceMotion ? 0 : 0.45,
                                 delay: reduceMotion ? 0 : Math.min(index * 0.045, 0.25),
                             }}
                             className={index === 0 || index === 5 ? 'sm:col-span-2 lg:col-span-1' : ''}
                         >
-                            <a
-                                href={site.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={`${site.name} — ${site.description} (opens in a new tab)`}
-                                className="group relative flex h-full min-h-56 flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-[#09121c]/80 p-6 outline-none backdrop-blur-xl transition-[border-color,transform,box-shadow] duration-300 hover:-translate-y-1 hover:border-[#00e5ff]/35 hover:shadow-[0_24px_70px_rgba(0,0,0,0.3)] focus-visible:ring-2 focus-visible:ring-[#00e5ff] focus-visible:ring-offset-4 focus-visible:ring-offset-[#05080d]"
-                            >
-                                <span className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full border border-[#3266ff]/20 transition-transform duration-500 group-hover:scale-125" aria-hidden="true" />
-                                <span className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full border border-[#00e5ff]/15 transition-transform duration-500 group-hover:scale-110" aria-hidden="true" />
-
-                                <span className="mb-10 flex items-start justify-between gap-4">
-                                    <span className="grid h-11 w-11 place-items-center rounded-xl border border-[#00e5ff]/20 bg-[#00e5ff]/[0.07] text-[#00e5ff] transition-colors group-hover:bg-[#00e5ff]/15" aria-hidden="true">
-                                        <Globe2 size={19} />
-                                    </span>
-                                    <span className="font-mono text-[0.58rem] font-bold uppercase tracking-[0.2em] text-white/25">
-                                        DEP-{String(index + 1).padStart(2, '0')}
-                                    </span>
-                                </span>
-
-                                <span className="mt-auto">
-                                    <span className="flex items-center justify-between gap-4">
-                                        <span className="font-display text-xl font-bold tracking-tight text-white transition-colors group-hover:text-[#00e5ff]">
-                                            {site.name}
-                                        </span>
-                                        <ArrowUpRight size={18} className="shrink-0 text-white/30 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#ff9d5c]" aria-hidden="true" />
-                                    </span>
-                                    <span className="mt-2 block text-sm text-white/50">{site.description}</span>
-                                    <span className="mt-5 block truncate border-t border-white/[0.07] pt-4 font-mono text-[0.62rem] uppercase tracking-[0.1em] text-white/30">
-                                        {hostname(site.url)}
-                                    </span>
-                                </span>
-                            </a>
+                            <WebsiteCard site={site} index={index} reduceMotion={reduceMotion} />
                         </motion.li>
                     ))}
                 </ol>

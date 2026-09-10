@@ -171,42 +171,34 @@ export const websites = [
 export const skills = [
     {
         category: 'Backend',
-        icon: '⚙️',
         items: ['Python', 'Django', 'Flask', 'Database Design', 'REST APIs'],
     },
     {
         category: 'Frontend',
-        icon: '🎨',
         items: ['React JS', 'Next JS', 'TypeScript', 'HTML5', 'Tailwind CSS', 'Responsive Design', 'State Management'],
     },
     {
         category: 'Cloud & DevOps',
-        icon: '☁️',
         items: ['Docker', 'Render', 'Azure', 'GCP', 'Vercel', 'Netlify', 'Server Administration'],
     },
     {
         category: 'Database',
-        icon: '🗄️',
         items: ['SQL', 'PostgreSQL', 'Supabase', 'Firebase', 'Redis'],
     },
     {
         category: 'AI & Systems',
-        icon: '🧠',
         items: ['Machine Learning Fundamentals', 'Document Processing', 'AI Integration', 'Azure AI'],
     },
     {
         category: 'Infrastructure',
-        icon: '🔧',
         items: ['Network Setup', 'System Monitoring', 'Hardware Configuration', 'IT Support'],
     },
     {
         category: 'Design & Tools',
-        icon: '🛠️',
         items: ['UI/UX Design', 'Figma', 'Adobe Creative Suite', 'Framer', 'Shopify', 'Git', 'WordPress'],
     },
     {
         category: 'Soft Skills',
-        icon: '💡',
         items: ['Communication', 'Teamwork', 'Adaptability', 'Problem Solving', 'Mentoring', 'Leadership'],
     },
 ]

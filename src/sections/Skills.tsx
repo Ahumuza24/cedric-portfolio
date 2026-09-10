@@ -1,12 +1,44 @@
 import { useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import { Cpu, Filter } from 'lucide-react'
+import {
+    motion,
+    useReducedMotion,
+    useMotionValue,
+    useSpring,
+    useTransform,
+    useMotionTemplate,
+} from 'framer-motion'
+import {
+    Cpu,
+    Filter,
+    Server,
+    LayoutTemplate,
+    Cloud,
+    Database,
+    BrainCircuit,
+    Network,
+    Palette,
+    Users,
+    type LucideIcon,
+} from 'lucide-react'
 import { skills } from '@/lib/data'
 
 type SkillCategoryName = 'All' | (typeof skills)[number]['category']
 type SkillCategoryData = (typeof skills)[number]
 
-function SkillCategory({
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+    'Backend': Server,
+    'Frontend': LayoutTemplate,
+    'Cloud & DevOps': Cloud,
+    'Database': Database,
+    'AI & Systems': BrainCircuit,
+    'Infrastructure': Network,
+    'Design & Tools': Palette,
+    'Soft Skills': Users,
+}
+
+const REVEAL_EASE = [0.16, 1, 0.3, 1] as const
+
+function SkillCard({
     category,
     index,
     shouldReduceMotion,
@@ -15,41 +47,77 @@ function SkillCategory({
     index: number
     shouldReduceMotion: boolean | null
 }) {
+    const Icon = CATEGORY_ICONS[category.category] ?? Cpu
+    const [isHovered, setIsHovered] = useState(false)
+
+    const pointerX = useMotionValue(0.5)
+    const pointerY = useMotionValue(0.5)
+    const springConfig = { stiffness: 300, damping: 30 }
+    const rotateX = useSpring(useTransform(pointerY, [0, 1], [7, -7]), springConfig)
+    const rotateY = useSpring(useTransform(pointerX, [0, 1], [-7, 7]), springConfig)
+    const spotlightX = useTransform(pointerX, (v) => `${v * 100}%`)
+    const spotlightY = useTransform(pointerY, (v) => `${v * 100}%`)
+    const spotlight = useMotionTemplate`radial-gradient(280px circle at ${spotlightX} ${spotlightY}, rgba(103,232,249,0.14), transparent 70%)`
+
+    function handlePointerMove(event: React.PointerEvent<HTMLElement>) {
+        if (shouldReduceMotion) return
+        const rect = event.currentTarget.getBoundingClientRect()
+        pointerX.set((event.clientX - rect.left) / rect.width)
+        pointerY.set((event.clientY - rect.top) / rect.height)
+    }
+
+    function handlePointerLeave() {
+        pointerX.set(0.5)
+        pointerY.set(0.5)
+        setIsHovered(false)
+    }
+
     return (
         <motion.article
             layout={!shouldReduceMotion}
-            initial={false}
-            animate={shouldReduceMotion ? undefined : { opacity: [0.78, 1], y: [8, 0], scale: [0.985, 1] }}
-            transition={{ duration: shouldReduceMotion ? 0.12 : 0.42, delay: shouldReduceMotion ? 0 : index * 0.045 }}
-            className="group relative overflow-hidden rounded-[1.75rem] border border-white/[0.08] bg-[#0a0f1c]/85 p-6 shadow-[0_24px_65px_rgba(0,0,0,0.25)] transition-colors duration-300 hover:border-cyan-300/30"
+            initial={shouldReduceMotion ? false : { opacity: 0, clipPath: 'inset(0 0 100% 0)', filter: 'blur(10px)' }}
+            animate={shouldReduceMotion ? undefined : { opacity: 1, clipPath: 'inset(0 0 0% 0)', filter: 'blur(0px)' }}
+            whileHover={shouldReduceMotion ? undefined : { scale: 1.015 }}
+            transition={{ duration: 0.6, delay: Math.min(index * 0.06, 0.3), ease: REVEAL_EASE }}
+            onPointerMove={handlePointerMove}
+            onPointerEnter={() => setIsHovered(true)}
+            onPointerLeave={handlePointerLeave}
+            style={shouldReduceMotion ? undefined : { rotateX, rotateY, transformPerspective: 800 }}
+            className="group relative rounded-[1.75rem] border border-white/[0.08] bg-[#0a0f1c]/85 p-6 transition-colors duration-300 hover:border-cyan-300/30"
         >
+            <motion.div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 rounded-[1.75rem]"
+                style={{ background: spotlight }}
+                animate={{ opacity: isHovered && !shouldReduceMotion ? 1 : 0 }}
+                transition={{ duration: 0.3 }}
+            />
             <div
                 aria-hidden="true"
-                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/45 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                className="absolute inset-x-0 top-0 h-px rounded-t-[1.75rem] bg-gradient-to-r from-transparent via-cyan-300/45 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
-            <div aria-hidden="true" className="absolute -right-20 -top-20 h-40 w-40 rounded-full border border-blue-400/10 transition-transform duration-700 group-hover:scale-110" />
 
             <div className="relative flex items-start justify-between gap-4">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.05] text-xl shadow-[inset_0_1px_rgba(255,255,255,0.06)]">
-                    <span aria-hidden="true">{category.icon}</span>
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.05] text-cyan-200 shadow-[inset_0_1px_rgba(255,255,255,0.06)]">
+                    <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={1.75} />
                 </div>
                 <span className="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-white/25">
-                    SYS-{String(index + 1).padStart(2, '0')}
+                    {category.items.length} {category.items.length === 1 ? 'signal' : 'signals'}
                 </span>
             </div>
 
-            <h3 className="relative mt-7 text-xl font-bold tracking-[-0.025em] text-white">
+            <h3 className="relative mt-7 font-display text-xl font-bold tracking-[-0.025em] text-white">
                 {category.category}
             </h3>
-            <div className="relative mt-5 flex flex-wrap gap-2">
+
+            <div className="relative mt-5 flex flex-wrap gap-1.5">
                 {category.items.map((item) => (
-                    <motion.span
+                    <span
                         key={item}
-                        whileHover={shouldReduceMotion ? undefined : { y: -2 }}
-                        className="rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs font-medium text-white/60 transition-colors hover:border-cyan-300/30 hover:text-cyan-100"
+                        className="rounded-md border border-white/[0.08] bg-white/[0.025] px-2.5 py-1 text-xs leading-relaxed text-offwhite/60 transition-all duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/[0.06] hover:text-cyan-100"
                     >
                         {item}
-                    </motion.span>
+                    </span>
                 ))}
             </div>
         </motion.article>
@@ -60,6 +128,7 @@ export default function Skills() {
     const [activeCategory, setActiveCategory] = useState<SkillCategoryName>('All')
     const shouldReduceMotion = useReducedMotion()
     const categories: SkillCategoryName[] = ['All', ...skills.map((skill) => skill.category)]
+    const totalItems = skills.reduce((sum, skill) => sum + skill.items.length, 0)
     const visibleSkills = activeCategory === 'All'
         ? skills
         : skills.filter((skill) => skill.category === activeCategory)
@@ -104,20 +173,33 @@ export default function Skills() {
                     <div aria-label="Filter skill categories" className="flex flex-wrap gap-2">
                         {categories.map((category) => {
                             const isActive = activeCategory === category
+                            const count = category === 'All'
+                                ? totalItems
+                                : skills.find((skill) => skill.category === category)?.items.length ?? 0
 
                             return (
                                 <button
                                     key={category}
                                     type="button"
                                     aria-pressed={isActive}
+                                    aria-label={category}
                                     onClick={() => setActiveCategory(category)}
-                                    className={`rounded-full border px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.12em] outline-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-4 focus-visible:ring-offset-[#050811] ${
+                                    className={`relative isolate rounded-full border px-4 py-2 font-mono text-[0.68rem] uppercase tracking-[0.12em] outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-4 focus-visible:ring-offset-[#050811] ${
                                         isActive
-                                            ? 'border-cyan-300/70 bg-cyan-300 text-[#041017] shadow-[0_0_24px_rgba(103,232,249,0.18)]'
+                                            ? 'border-cyan-300/70 text-[#041017]'
                                             : 'border-white/10 bg-white/[0.025] text-white/45 hover:border-cyan-300/35 hover:text-cyan-100'
                                     }`}
                                 >
-                                    {category}
+                                    {isActive && (
+                                        <motion.span
+                                            layoutId="skills-filter-active"
+                                            aria-hidden="true"
+                                            className="absolute inset-0 -z-10 rounded-full bg-cyan-300 shadow-[0_0_24px_rgba(103,232,249,0.18)]"
+                                            transition={shouldReduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 380, damping: 32 }}
+                                        />
+                                    )}
+                                    <span className="relative">{category}</span>
+                                    <span aria-hidden="true" className="relative ml-1.5 opacity-60">{count}</span>
                                 </button>
                             )
                         })}
@@ -134,7 +216,7 @@ export default function Skills() {
                     }`}
                 >
                     {visibleSkills.map((skill, index) => (
-                        <SkillCategory
+                        <SkillCard
                             key={skill.category}
                             category={skill}
                             index={index}
