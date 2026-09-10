@@ -12,12 +12,12 @@ export default function Home() {
     return (
         <>
             <Navbar />
-            <main>
+            <main id="main-content">
                 <Hero />
-                <Experience />
-                <Education />
                 <Projects />
                 <Websites />
+                <Experience />
+                <Education />
                 <Skills />
                 <Contact />
             </main>

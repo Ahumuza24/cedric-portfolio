@@ -89,7 +89,7 @@ export const education = [
         institution: 'Makerere University',
         degree: 'Bachelor of Science in Computer Science',
         period: 'Aug 2022 – May 2025',
-        current: true,
+        current: false,
     },
     {
         id: 2,

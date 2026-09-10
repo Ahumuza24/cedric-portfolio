@@ -11,6 +11,7 @@ const NotFound = lazy(() => import('@/pages/NotFound'))
 export default function App() {
     return (
         <BrowserRouter>
+            <a href="#main-content" className="skip-link">Skip to content</a>
             <ScrollProgressIndicator />
             <Suspense fallback={<LoadingScreen />}>
                 <Routes>
@@ -23,14 +24,17 @@ export default function App() {
                 position="bottom-right"
                 toastOptions={{
                     style: {
-                        background: '#1C1C1C',
-                        color: '#F5F5F2',
-                        border: '1px solid rgba(228,87,46,0.3)',
+                        background: '#0B101C',
+                        color: '#F4F7FF',
+                        border: '1px solid rgba(110,243,255,0.22)',
+                        borderRadius: '14px',
+                        fontFamily: 'Space Mono, monospace',
+                        fontSize: '12px',
                     },
                     success: {
                         iconTheme: {
-                            primary: '#E4572E',
-                            secondary: '#F5F5F2',
+                            primary: '#66F6D2',
+                            secondary: '#05070D',
                         },
                     },
                 }}

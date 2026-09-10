@@ -1,231 +1,135 @@
-import { useRef } from 'react'
-import { motion, useMotionValue, useTransform } from 'framer-motion'
-import { ArrowDown, Github, Mail, Download, ChevronRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { ArrowDownRight, Download, Github, Mail, MoveDownRight } from 'lucide-react'
+import { HeroVisual } from '@/components/hero/HeroVisual'
+import { getHeroRenderMode, isWebGLSupported } from '@/lib/capabilities'
 
-const floatingTags = ['React', 'Python', 'Django', 'TypeScript', 'Node.js', 'Docker', 'Next.js', 'PostgreSQL', 'Firebase', 'Azure']
+const signals = [
+  { code: '01', label: 'Full-stack systems' },
+  { code: '02', label: 'Enterprise automation' },
+  { code: '03', label: 'Digital products' },
+]
 
 export default function Hero() {
-    const containerRef = useRef<HTMLDivElement>(null)
-    const mouseX = useMotionValue(0)
-    const mouseY = useMotionValue(0)
+  const reducedMotion = useReducedMotion() ?? true
+  const [webglSupported, setWebglSupported] = useState(false)
+  const [profileAvailable, setProfileAvailable] = useState(true)
 
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const rect = containerRef.current?.getBoundingClientRect()
-        if (!rect) return
-        mouseX.set(e.clientX - rect.left - rect.width / 2)
-        mouseY.set(e.clientY - rect.top - rect.height / 2)
-    }
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      setWebglSupported(isWebGLSupported())
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [])
 
-    const gradX = useTransform(mouseX, [-800, 800], ['30%', '70%'])
-    const gradY = useTransform(mouseY, [-600, 600], ['20%', '80%'])
+  const renderMode = getHeroRenderMode({ reducedMotion, webglSupported })
+  const enter = (delay = 0) => reducedMotion
+    ? { initial: false as const }
+    : {
+        initial: { opacity: 0, y: 24 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] as const },
+      }
 
-    const handleScroll = (id: string) => {
-        document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
-    }
+  return (
+    <section id="hero" className="relative isolate flex min-h-screen items-center overflow-hidden bg-[#05070b] pt-20 text-[#f4f7fb]">
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_72%_36%,rgba(37,99,235,0.22),transparent_34%),radial-gradient(circle_at_18%_82%,rgba(34,211,238,0.10),transparent_28%),linear-gradient(135deg,#05070b_0%,#080d17_55%,#05070b_100%)]" />
+      <div className="absolute inset-0 -z-10 opacity-25 [background-image:linear-gradient(rgba(103,232,249,0.09)_1px,transparent_1px),linear-gradient(90deg,rgba(103,232,249,0.09)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
 
-    return (
-        <section
-            id="hero"
-            ref={containerRef}
-            onMouseMove={handleMouseMove}
-            className="relative min-h-screen flex items-center overflow-hidden grid-bg"
-        >
-            {/* Mouse reactive glow */}
-            <motion.div
-                className="pointer-events-none absolute inset-0 opacity-20"
-                style={{
-                    background: useTransform(
-                        [gradX, gradY],
-                        ([x, y]) =>
-                            `radial-gradient(600px circle at ${x} ${y}, rgba(228,87,46,0.3), transparent 50%)`
-                    ),
-                }}
-            />
+      <div className="section-container relative z-10 w-full py-16 lg:py-24">
+        <div className="grid min-w-0 items-center gap-14 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-8">
+          <div className="relative z-20 min-w-0">
+            <motion.div {...enter()} className="mb-6 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.32em] text-cyan-300 sm:text-xs">
+              <span className="h-px w-8 bg-cyan-300" />
+              Full Stack Developer
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-orange-400 shadow-[0_0_12px_rgba(251,146,60,0.9)]" />
+            </motion.div>
 
-            {/* Top decorative line */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-burnt-orange/40 to-transparent" />
+            <motion.h1 {...enter(0.08)} className="max-w-full font-display text-[clamp(3.05rem,15vw,8.6rem)] font-black uppercase leading-[0.8] tracking-[-0.075em]">
+              <span className="block text-white">Cedric</span>
+              <span className="block pr-3 text-cyan-300">Ahumuza</span>
+            </motion.h1>
 
-            <div className="section-container relative z-10 pt-24 pb-20">
-                <div className="grid lg:grid-cols-2 gap-16 lg:gap-8 items-center">
-                    {/* Left — Text content */}
-                    <div className="space-y-8">
-                        {/* Label */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            className="flex items-center gap-3"
-                        >
-                            <div className="w-8 h-px bg-burnt-orange" />
-                            <span className="section-subheading">Full Stack Developer</span>
-                        </motion.div>
+            <motion.p {...enter(0.16)} className="mt-8 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
+              I build production-ready systems and deliver internal enterprise tools,
+              automation systems, and scalable web platforms that improve operational efficiency.
+            </motion.p>
 
-                        {/* Name */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.7, delay: 0.1 }}
-                        >
-                            <h1 className="text-6xl lg:text-8xl font-black tracking-tight leading-none">
-                                <span className="text-offwhite">Cedric</span>
-                                <br />
-                                <span className="text-gradient-orange">Ahumuza</span>
-                            </h1>
-                        </motion.div>
+            <motion.div {...enter(0.24)} className="mt-9 flex flex-wrap gap-3">
+              <a href="#projects" className="group inline-flex min-h-12 items-center gap-3 rounded-full bg-cyan-300 px-6 py-3 text-sm font-bold text-[#05070b] transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300">
+                View Projects
+                <ArrowDownRight size={17} className="transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
+              </a>
+              <a
+                href="https://drive.google.com/file/d/1K5JZkpHVrgJqiZ3X60nDuHBI1YvbOecD/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open Cedric Ahumuza's resume in a new tab"
+                className="inline-flex min-h-12 items-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white backdrop-blur transition hover:border-cyan-300/70 hover:text-cyan-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
+              >
+                <Download size={16} /> Resume
+              </a>
+              <a href="#contact" className="inline-flex min-h-12 items-center gap-2 rounded-full border border-white/20 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white backdrop-blur transition hover:border-orange-400/70 hover:text-orange-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300">
+                <Mail size={16} /> Contact Me
+              </a>
+            </motion.div>
 
-                        {/* Bio */}
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
-                            className="text-offwhite/60 text-base leading-relaxed max-w-lg"
-                        >
-                            I build production-ready systems and
-                            deliver internal enterprise tools, automation systems, and scalable web platforms
-                            that improve operational efficiency.
-                        </motion.p>
+            <motion.div {...enter(0.32)} className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 font-mono text-[11px] uppercase tracking-[0.14em] text-slate-500">
+              <a href="https://github.com/Ahumuza24" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 transition hover:text-cyan-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300">
+                <Github size={15} /> Ahumuza24
+              </a>
+              <span className="hidden h-3 w-px bg-white/15 sm:block" />
+              <a href="mailto:ahumuzacedric@gmail.com" className="inline-flex items-center gap-2 normal-case tracking-normal transition hover:text-cyan-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300">
+                <Mail size={15} /> ahumuzacedric@gmail.com
+              </a>
+            </motion.div>
+          </div>
 
-                        {/* CTAs */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className="flex flex-wrap gap-4"
-                        >
-                            <motion.button
-                                whileHover={{ scale: 1.04 }}
-                                whileTap={{ scale: 0.97 }}
-                                onClick={() => handleScroll('#projects')}
-                                className="btn-primary"
-                            >
-                                View Projects <ChevronRight size={16} />
-                            </motion.button>
-                            <motion.a
-                                whileHover={{ scale: 1.04 }}
-                                whileTap={{ scale: 0.97 }}
-                                href="https://drive.google.com/file/d/1K5JZkpHVrgJqiZ3X60nDuHBI1YvbOecD/view?usp=sharing"
-                                download
-                                className="btn-outline"
-                            >
-                                <Download size={16} /> Resume
-                            </motion.a>
-                            <motion.button
-                                whileHover={{ scale: 1.04 }}
-                                whileTap={{ scale: 0.97 }}
-                                onClick={() => handleScroll('#contact')}
-                                className="btn-outline"
-                            >
-                                <Mail size={16} /> Contact Me
-                            </motion.button>
-                        </motion.div>
-
-                        {/* Socials */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.6 }}
-                            className="flex items-center gap-4 pt-2"
-                        >
-                            <a
-                                href="https://github.com/Ahumuza24"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 text-xs text-offwhite/40 hover:text-burnt-orange transition-colors"
-                            >
-                                <Github size={16} /> Ahumuza24
-                            </a>
-                            <span className="w-px h-4 bg-white/10" />
-                            <a
-                                href="mailto:ahumuzacedric@gmail.com"
-                                className="flex items-center gap-2 text-xs text-offwhite/40 hover:text-burnt-orange transition-colors"
-                            >
-                                <Mail size={16} /> ahumuzacedric@gmail.com
-                            </a>
-                            
-                        </motion.div>
-                    </div>
-
-                    {/* Right — Image + floating tags */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="relative flex items-center justify-center"
-                    >
-                        {/* Floating tags */}
-                        {floatingTags.map((tag, i) => {
-                            const angle = (i / floatingTags.length) * 360
-                            const radius = 220
-                            const rad = (angle * Math.PI) / 180
-                            const x = Math.cos(rad) * radius
-                            const y = Math.sin(rad) * radius * 0.7
-                            return (
-                                <motion.div
-                                    key={tag}
-                                    className="absolute px-3 py-1 text-xs font-semibold rounded-full bg-graphite border border-white/10 text-offwhite/70 whitespace-nowrap"
-                                    style={{ left: `calc(50% + ${x}px)`, top: `calc(50% + ${y}px)`, transform: 'translate(-50%,-50%)' }}
-                                    animate={{ y: [0, -8, 0] }}
-                                    transition={{
-                                        duration: 3 + (i % 3),
-                                        repeat: Infinity,
-                                        delay: i * 0.2,
-                                        ease: 'easeInOut',
-                                    }}
-                                >
-                                    {tag}
-                                </motion.div>
-                            )
-                        })}
-
-                        {/* Profile image container */}
-                        <motion.div
-                            className="relative w-64 h-64 lg:w-80 lg:h-80"
-                            animate={{ y: [0, -8, 0] }}
-                            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-                        >
-                            {/* Glow ring */}
-                            <div className="absolute inset-0 rounded-3xl animate-pulse-glow" />
-                            {/* Orange border */}
-                            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-burnt-orange via-burnt-orange/30 to-transparent opacity-60" />
-                            {/* Image */}
-                            <div className="relative w-full h-full rounded-3xl overflow-hidden border border-burnt-orange/30 shadow-2xl">
-                                <img
-                                    src="/profile.jpg"
-                                    alt="Cedric Ahumuza"
-                                    className="w-full h-full object-cover"
-                                    onError={(e) => {
-                                        const target = e.target as HTMLImageElement
-                                        target.style.display = 'none'
-                                        if (target.parentElement) {
-                                            target.parentElement.style.background = 'linear-gradient(135deg, #1C1C1C, #2a2a2a)'
-                                            target.parentElement.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px"><span style="font-size:16px;font-weight:600;color:#E4572E;font-family:Inter,sans-serif">Please save your attached image as "profile.jpg" in the "public" folder!</span></div>`
-                                        }
-                                    }}
-                                />
-                            </div>
-                        </motion.div>
-                    </motion.div>
-                </div>
-
-                {/* Scroll indicator */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1 }}
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-                >
-                    <span className="text-xs text-offwhite/30 tracking-widest uppercase">Scroll</span>
-                    <motion.div
-                        animate={{ y: [0, 6, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                        <ArrowDown size={16} className="text-burnt-orange" />
-                    </motion.div>
-                </motion.div>
+          <motion.div {...enter(0.14)} className="relative mx-auto aspect-[4/5] w-full min-w-0 max-w-[520px] lg:ml-auto">
+            <HeroVisual mode={renderMode} />
+            <div className="pointer-events-none absolute inset-[9%_9%_7%_13%] rotate-3 rounded-[2.25rem] border border-cyan-300/25 bg-gradient-to-br from-blue-600/20 via-transparent to-orange-400/10 shadow-[0_0_80px_rgba(37,99,235,0.18)] backdrop-blur-[2px]" />
+            <div className="pointer-events-none absolute inset-[14%_13%_12%_18%] overflow-hidden rounded-[1.8rem] border border-white/15 bg-[#0b1220] shadow-2xl">
+              {profileAvailable ? (
+                <img
+                  src="/profile-optimized.jpg"
+                  alt="Cedric Ahumuza"
+                  width={1200}
+                  height={1200}
+                  loading="eager"
+                  decoding="async"
+                  className="h-full w-full object-cover grayscale-[15%] contrast-[1.04]"
+                  onError={() => setProfileAvailable(false)}
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center bg-gradient-to-br from-blue-950 to-[#05070b] font-display text-7xl font-black text-cyan-300" role="img" aria-label="Cedric Ahumuza initials">CA</div>
+              )}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#05070b]/80 via-transparent to-cyan-300/5" />
+              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 font-mono text-[9px] uppercase tracking-[0.2em] text-cyan-200/75">
+                <span>Based in Kampala</span>
+                <span>Design · Code</span>
+              </div>
             </div>
+            <div className="pointer-events-none absolute left-0 top-[12%] rounded-full border border-cyan-300/25 bg-[#07101d]/85 px-4 py-2 font-mono text-[9px] uppercase tracking-[0.2em] text-cyan-200 backdrop-blur-md">Systems online</div>
+            <div className="pointer-events-none absolute bottom-[9%] right-0 flex items-center gap-2 rounded-full border border-orange-400/25 bg-[#100b08]/90 px-4 py-2 font-mono text-[9px] uppercase tracking-[0.2em] text-orange-300 backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-orange-400" /> Open to building
+            </div>
+          </motion.div>
+        </div>
 
-            {/* Bottom gradient fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-charcoal to-transparent" />
-        </section>
-    )
+        <motion.div {...enter(0.4)} className="mt-12 grid border-y border-white/10 sm:grid-cols-3 lg:mt-16">
+          {signals.map((signal) => (
+            <div key={signal.code} className="flex items-center gap-4 border-white/10 px-4 py-4 first:pl-0 sm:border-r sm:last:border-r-0">
+              <span className="font-mono text-[10px] text-cyan-300/60">{signal.code}</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-300">{signal.label}</span>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      <a href="#projects" aria-label="Scroll to selected work" className="absolute bottom-7 right-6 z-20 hidden items-center gap-3 font-mono text-[9px] uppercase tracking-[0.25em] text-slate-500 transition hover:text-cyan-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300 md:flex lg:right-12">
+        Explore <MoveDownRight size={16} />
+      </a>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#05070b] to-transparent" />
+    </section>
+  )
 }

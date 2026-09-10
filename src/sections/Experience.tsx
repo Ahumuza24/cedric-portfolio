@@ -1,110 +1,179 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { MapPin, Calendar, ChevronDown, ChevronUp } from 'lucide-react'
+import { useRef, useState } from 'react'
+import {
+    motion,
+    useReducedMotion,
+    useScroll,
+    useSpring,
+} from 'framer-motion'
+import { Calendar, ChevronDown, MapPin } from 'lucide-react'
 import { experience } from '@/lib/data'
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
-}
-
-const itemVariants = {
-    hidden: { opacity: 0, x: -30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-}
-
 export default function Experience() {
-    const [expanded, setExpanded] = useState<number | null>(1)
+    const [expanded, setExpanded] = useState<number | null>(experience[0]?.id ?? null)
+    const timelineRef = useRef<HTMLDivElement>(null)
+    const reduceMotion = useReducedMotion()
+    const { scrollYProgress } = useScroll({
+        target: timelineRef,
+        offset: ['start 0.85', 'end 0.3'],
+    })
+    const progress = useSpring(scrollYProgress, {
+        stiffness: 110,
+        damping: 28,
+        restDelta: 0.001,
+    })
 
     return (
-        <section id="experience" className="py-24 lg:py-32 relative">
-            <div className="section-container">
-                {/* Heading */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.7 }}
-                    className="mb-16"
-                >
-                    <p className="section-subheading mb-4">Career Path</p>
-                    <h2 className="section-heading">
-                        Professional
-                        <br />
-                        <span className="text-gradient-orange">Experience</span>
-                    </h2>
-                </motion.div>
+        <section
+            id="experience"
+            aria-labelledby="experience-heading"
+            className="relative overflow-hidden py-24 lg:py-36"
+        >
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_32%,rgba(50,102,255,0.12),transparent_30%),radial-gradient(circle_at_84%_70%,rgba(0,229,255,0.07),transparent_26%)]" />
 
-                {/* Timeline */}
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.1 }}
-                    className="relative pl-8 border-l border-white/10 space-y-6"
-                >
-                    {experience.map((job) => (
-                        <motion.div key={job.id} variants={itemVariants}>
-                            {/* Dot */}
-                            <div className="absolute -left-2">
-                                <div
-                                    className={`w-4 h-4 rounded-full border-2 ${job.current ? 'border-burnt-orange bg-burnt-orange/20' : 'border-white/20 bg-charcoal'
-                                        }`}
-                                />
-                            </div>
+            <div className="section-container relative">
+                <div className="grid gap-14 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+                    <motion.header
+                        initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: reduceMotion ? 0 : 0.6 }}
+                        className="self-start lg:sticky lg:top-32"
+                    >
+                        <div className="mb-7 flex items-center gap-3 font-mono text-[0.68rem] font-bold uppercase tracking-[0.28em] text-[#00e5ff]">
+                            <span className="h-px w-9 bg-[#00e5ff]" aria-hidden="true" />
+                            Career trajectory
+                        </div>
+                        <h2
+                            id="experience-heading"
+                            className="max-w-xl font-display text-5xl font-bold leading-[0.92] tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl"
+                        >
+                            Systems built<br />
+                            <span className="text-[#00e5ff]">
+                                through time.
+                            </span>
+                        </h2>
+                        <p className="mt-7 max-w-sm text-sm leading-7 text-white/50">
+                            Select a signal to inspect the work behind each role.
+                        </p>
 
-                            {/* Card */}
-                            <motion.div
-                                className="glass-card p-6 cursor-pointer hover:border-burnt-orange/20 transition-all duration-300"
-                                onClick={() => setExpanded(expanded === job.id ? null : job.id)}
-                                whileHover={{ x: 4 }}
-                            >
-                                {/* Header */}
-                                <div className="flex items-start justify-between gap-4">
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-2 flex-wrap">
-                                            <h3 className="text-lg font-bold text-offwhite">{job.company}</h3>
-                                            {job.current && (
-                                                <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-burnt-orange/20 text-burnt-orange border border-burnt-orange/30">
-                                                    Current
-                                                </span>
-                                            )}
-                                        </div>
-                                        <p className="text-burnt-orange font-semibold text-sm mt-0.5">{job.role}</p>
-                                        <div className="flex items-center gap-4 mt-2 flex-wrap">
-                                            <span className="flex items-center gap-1.5 text-xs text-offwhite/40">
-                                                <Calendar size={12} /> {job.period}
-                                            </span>
-                                            <span className="flex items-center gap-1.5 text-xs text-offwhite/40">
-                                                <MapPin size={12} /> {job.location}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="text-offwhite/40 flex-shrink-0 mt-1">
-                                        {expanded === job.id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                                    </div>
-                                </div>
+                        <div className="mt-12 hidden items-center gap-4 lg:flex" aria-hidden="true">
+                            <span className="font-mono text-[0.62rem] uppercase tracking-[0.24em] text-white/30">
+                                Scroll to trace
+                            </span>
+                            <span className="h-px w-20 bg-gradient-to-r from-[#00e5ff]/70 to-transparent" />
+                        </div>
+                    </motion.header>
 
-                                {/* Expanded bullets */}
-                                {expanded === job.id && (
-                                    <motion.ul
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: 'auto' }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        className="mt-5 space-y-2.5 pl-1 border-t border-white/5 pt-5"
+                    <div ref={timelineRef} className="relative pl-8 sm:pl-12">
+                        <div className="absolute bottom-0 left-[0.43rem] top-0 w-px bg-white/10 sm:left-[0.68rem]" aria-hidden="true" />
+                        <motion.div
+                            className="absolute bottom-0 left-[0.43rem] top-0 w-px origin-top bg-gradient-to-b from-[#00e5ff] via-[#3266ff] to-[#ff9d5c] shadow-[0_0_18px_rgba(0,229,255,0.45)] sm:left-[0.68rem]"
+                            style={{ scaleY: reduceMotion ? 1 : progress }}
+                            aria-hidden="true"
+                        />
+
+                        <ol className="space-y-5">
+                            {experience.map((job, index) => {
+                                const isExpanded = expanded === job.id
+                                const triggerId = `experience-trigger-${job.id}`
+                                const panelId = `experience-panel-${job.id}`
+
+                                return (
+                                    <motion.li
+                                        key={job.id}
+                                        initial={reduceMotion ? false : { opacity: 0, x: 28 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true, amount: 0.2 }}
+                                        transition={{
+                                            duration: reduceMotion ? 0 : 0.5,
+                                            delay: reduceMotion ? 0 : Math.min(index * 0.06, 0.24),
+                                        }}
+                                        className="relative"
                                     >
-                                        {job.bullets.map((bullet, i) => (
-                                            <li key={i} className="flex items-start gap-3 text-sm text-offwhite/60">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-burnt-orange flex-shrink-0 mt-2" />
-                                                {bullet}
-                                            </li>
-                                        ))}
-                                    </motion.ul>
-                                )}
-                            </motion.div>
-                        </motion.div>
-                    ))}
-                </motion.div>
+                                        <span
+                                            className={`absolute -left-[2.02rem] top-7 grid h-3.5 w-3.5 place-items-center rounded-full border sm:-left-[2.84rem] ${
+                                                job.current
+                                                    ? 'border-[#00e5ff] bg-[#071018] shadow-[0_0_18px_rgba(0,229,255,0.75)]'
+                                                    : 'border-white/25 bg-[#071018]'
+                                            }`}
+                                            aria-hidden="true"
+                                        >
+                                            <span className={`h-1 w-1 rounded-full ${job.current ? 'bg-[#00e5ff]' : 'bg-white/30'}`} />
+                                        </span>
+
+                                        <article className={`overflow-hidden rounded-2xl border bg-[#09121c]/80 backdrop-blur-xl transition-colors duration-300 ${
+                                            isExpanded
+                                                ? 'border-[#00e5ff]/35 shadow-[0_20px_80px_rgba(0,0,0,0.3)]'
+                                                : 'border-white/[0.08] hover:border-white/20'
+                                        }`}>
+                                            <button
+                                                id={triggerId}
+                                                type="button"
+                                                aria-expanded={isExpanded}
+                                                aria-controls={panelId}
+                                                onClick={() => setExpanded((current) => current === job.id ? null : job.id)}
+                                                className="group flex w-full items-start justify-between gap-5 p-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#00e5ff] sm:p-7"
+                                            >
+                                                <span className="min-w-0 flex-1">
+                                                    <span className="mb-3 flex flex-wrap items-center gap-2.5">
+                                                        <span className="font-mono text-[0.62rem] font-bold uppercase tracking-[0.2em] text-[#67a2ff]">
+                                                            Signal {String(index + 1).padStart(2, '0')}
+                                                        </span>
+                                                        {job.current && (
+                                                            <span className="rounded-full border border-[#00e5ff]/30 bg-[#00e5ff]/10 px-2.5 py-1 font-mono text-[0.58rem] font-bold uppercase tracking-[0.16em] text-[#00e5ff]">
+                                                                Current
+                                                            </span>
+                                                        )}
+                                                    </span>
+                                                    <span className="block font-display text-xl font-bold tracking-tight text-white sm:text-2xl">
+                                                        {job.company}
+                                                    </span>
+                                                    <span className="mt-1.5 block text-sm font-semibold text-[#ff9d5c]">
+                                                        {job.role}
+                                                    </span>
+                                                    <span className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[0.66rem] uppercase tracking-[0.08em] text-white/40">
+                                                        <span className="flex items-center gap-1.5">
+                                                            <Calendar size={12} aria-hidden="true" />
+                                                            {job.period}
+                                                        </span>
+                                                        <span className="flex items-center gap-1.5">
+                                                            <MapPin size={12} aria-hidden="true" />
+                                                            {job.location}
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                                <span className="mt-1 grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-white/50 transition-colors group-hover:border-[#00e5ff]/30 group-hover:text-[#00e5ff]" aria-hidden="true">
+                                                    <ChevronDown
+                                                        size={17}
+                                                        className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                                                    />
+                                                </span>
+                                            </button>
+
+                                            {isExpanded && (
+                                                <div
+                                                    id={panelId}
+                                                    role="region"
+                                                    aria-labelledby={triggerId}
+                                                    className="border-t border-white/[0.07] px-5 pb-6 pt-5 sm:px-7 sm:pb-7"
+                                                >
+                                                    <ul className="space-y-3">
+                                                        {job.bullets.map((bullet) => (
+                                                            <li key={bullet} className="flex items-start gap-3 text-sm leading-6 text-white/60">
+                                                                <span className="mt-2.5 h-1 w-4 shrink-0 bg-gradient-to-r from-[#00e5ff] to-[#3266ff]" aria-hidden="true" />
+                                                                <span>{bullet}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </article>
+                                    </motion.li>
+                                )
+                            })}
+                        </ol>
+                    </div>
+                </div>
             </div>
         </section>
     )

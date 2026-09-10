@@ -5,12 +5,23 @@ export default {
     theme: {
         extend: {
             colors: {
-                charcoal: '#111111',
-                graphite: '#1C1C1C',
-                offwhite: '#F5F5F2',
-                'burnt-orange': '#E4572E',
-                gold: '#C6A75E',
-                sage: '#7A8F7A',
+                charcoal: '#05070D',
+                graphite: '#0B101C',
+                offwhite: '#F4F7FF',
+                'burnt-orange': '#FF985B',
+                gold: '#9DA8FF',
+                sage: '#66F6D2',
+                cyan: {
+                    50: '#ECFEFF',
+                    100: '#CFFAFE',
+                    200: '#A5F3FC',
+                    300: '#67E8F9',
+                    400: '#22D3EE',
+                    500: '#06B6D4',
+                    600: '#0891B2',
+                    DEFAULT: '#6EF3FF',
+                },
+                cobalt: '#756BFF',
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',
@@ -34,8 +45,9 @@ export default {
                 },
             },
             fontFamily: {
-                sans: ['Inter', 'system-ui', 'sans-serif'],
-                display: ['Inter', 'sans-serif'],
+                sans: ['Karla', 'system-ui', 'sans-serif'],
+                display: ['Montserrat', 'system-ui', 'sans-serif'],
+                mono: ['Space Mono', 'ui-monospace', 'monospace'],
             },
             animation: {
                 'float': 'float 6s ease-in-out infinite',

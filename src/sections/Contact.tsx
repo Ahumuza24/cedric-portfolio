@@ -1,222 +1,186 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { MapPin, Phone, Mail, Github, Copy, Check, Send } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { ArrowUpRight, Check, Copy, Github, Mail, MapPin, Phone, Send } from 'lucide-react'
 import emailjs from '@emailjs/browser'
+import toast from 'react-hot-toast'
 
-// ─── EmailJS credentials ──────────────────────────────────────────────────────
-// Sign up free at https://www.emailjs.com/, then replace the three values below.
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID'
 const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID'
 const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY'
-// ─────────────────────────────────────────────────────────────────────────────
+const EMAIL_ADDRESS = 'ahumuzacedric@gmail.com'
+
+type ContactForm = { name: string; email: string; message: string }
+type ContactErrors = Partial<Record<keyof ContactForm, string>>
+
+const emptyForm: ContactForm = { name: '', email: '', message: '' }
+
+function validateContactForm(form: ContactForm): ContactErrors {
+  const errors: ContactErrors = {}
+  const name = form.name.trim()
+  const email = form.email.trim()
+  const message = form.message.trim()
+
+  if (!name) errors.name = 'Name is required'
+  else if (name.length > 100) errors.name = 'Name must be 100 characters or fewer'
+
+  if (!email) errors.email = 'Email is required'
+  else if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Enter a valid email'
+
+  if (!message) errors.message = 'Message is required'
+  else if (message.length > 2000) errors.message = 'Message must be 2,000 characters or fewer'
+
+  return errors
+}
+
+const contactInfo = [
+  { icon: MapPin, label: 'Location', value: 'Luteete, Gayaza Road, Kampala, Uganda' },
+  { icon: Phone, label: 'Phone', value: '+256703103834', href: 'https://wa.me/256703103834' },
+  { icon: Mail, label: 'Email', value: EMAIL_ADDRESS, href: `mailto:${EMAIL_ADDRESS}` },
+  { icon: Github, label: 'GitHub', value: 'github.com/Ahumuza24', href: 'https://github.com/Ahumuza24' },
+]
 
 export default function Contact() {
-    const formRef = useRef<HTMLFormElement>(null)
-    const [form, setForm] = useState({ name: '', email: '', message: '' })
-    const [errors, setErrors] = useState<Record<string, string>>({})
-    const [sending, setSending] = useState(false)
-    const [copied, setCopied] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
+  const [form, setForm] = useState<ContactForm>(emptyForm)
+  const [errors, setErrors] = useState<ContactErrors>({})
+  const [sending, setSending] = useState(false)
+  const [copied, setCopied] = useState(false)
 
-    const validate = () => {
-        const e: Record<string, string> = {}
-        if (!form.name.trim()) e.name = 'Name is required'
-        if (!form.email.trim()) e.email = 'Email is required'
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Enter a valid email'
-        if (!form.message.trim()) e.message = 'Message is required'
-        return e
+  const updateField = (field: keyof ContactForm, value: string) => {
+    setForm((current) => ({ ...current, [field]: value }))
+    setErrors((current) => ({ ...current, [field]: undefined }))
+  }
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+    const nextErrors = validateContactForm(form)
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors)
+      return
     }
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        const errs = validate()
-        if (Object.keys(errs).length) { setErrors(errs); return }
-        setErrors({})
-        setSending(true)
-        try {
-            await emailjs.sendForm(
-                EMAILJS_SERVICE_ID,
-                EMAILJS_TEMPLATE_ID,
-                formRef.current!,
-                EMAILJS_PUBLIC_KEY,
-            )
-            setForm({ name: '', email: '', message: '' })
-            toast.success("Message sent! I'll get back to you soon. 🚀", { duration: 4000 })
-        } catch (err) {
-            console.error('EmailJS error:', err)
-            toast.error('Failed to send message. Please try again or email me directly.', { duration: 5000 })
-        } finally {
-            setSending(false)
-        }
+    setSending(true)
+    try {
+      await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, formRef.current!, EMAILJS_PUBLIC_KEY)
+      setForm(emptyForm)
+      toast.success("Signal received — I'll get back to you soon.", { duration: 4000 })
+    } catch {
+      console.error('Contact request failed')
+      toast.error('The signal dropped. Please email me directly.', { duration: 5000 })
+    } finally {
+      setSending(false)
     }
+  }
 
-    const copyEmail = () => {
-        navigator.clipboard.writeText('ahumuzacedric@gmail.com')
-        setCopied(true)
-        toast.success('Email copied!', { duration: 2000 })
-        setTimeout(() => setCopied(false), 2000)
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL_ADDRESS)
+      setCopied(true)
+      toast.success('Email copied', { duration: 2000 })
+      window.setTimeout(() => setCopied(false), 2000)
+    } catch {
+      toast.error('Copy failed — select the email address instead.')
     }
+  }
 
-    const contactInfo = [
-        { icon: MapPin, label: 'Location', value: 'Luteete, Gayaza Road, Kampala, Uganda' },
-        { icon: Phone, label: 'Phone', value: '+256703103834', href: 'https://wa.me/256703103834' },
-        { icon: Mail, label: 'Email', value: 'ahumuzacedric@gmail.com', href: 'mailto:ahumuzacedric@gmail.com' },
-        { icon: Github, label: 'GitHub', value: 'github.com/Ahumuza24', href: 'https://github.com/Ahumuza24' },
-    ]
-
-    return (
-        <section id="contact" className="py-24 lg:py-32 bg-graphite/30">
-            <div className="section-container">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.7 }}
-                    className="mb-16"
-                >
-                    <p className="section-subheading mb-4">Get In Touch</p>
-                    <h2 className="section-heading">
-                        Let's Build
-                        <br />
-                        <span className="text-gradient-orange">Together</span>
-                    </h2>
-                </motion.div>
-
-                <div className="grid lg:grid-cols-2 gap-12">
-                    {/* Left — Info */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.7 }}
-                        className="space-y-8"
-                    >
-                        <p className="text-offwhite/60 leading-relaxed text-base max-w-md">
-                            Whether you have a project in mind, are looking for a developer, or just want to talk tech —
-                            I'm always open to new opportunities and conversations.
-                        </p>
-
-                        <div className="space-y-5">
-                            {contactInfo.map(({ icon: Icon, label, value, href }) => (
-                                <div key={label} className="flex items-start gap-4 group">
-                                    <div className="w-10 h-10 rounded-xl bg-graphite border border-white/10 flex items-center justify-center flex-shrink-0 group-hover:border-burnt-orange/30 transition-colors duration-300">
-                                        <Icon size={16} className="text-burnt-orange" />
-                                    </div>
-                                    <div>
-                                        <p className="text-xs text-offwhite/40 mb-0.5">{label}</p>
-                                        {href ? (
-                                            <a href={href} target="_blank" rel="noopener noreferrer" className="text-sm text-offwhite/80 hover:text-burnt-orange transition-colors">
-                                                {value}
-                                            </a>
-                                        ) : (
-                                            <p className="text-sm text-offwhite/80">{value}</p>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Copy email */}
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.97 }}
-                            onClick={copyEmail}
-                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 hover:border-burnt-orange/30 text-sm text-offwhite/60 hover:text-offwhite transition-all duration-300"
-                        >
-                            {copied ? <Check size={15} className="text-sage" /> : <Copy size={15} />}
-                            {copied ? 'Copied!' : 'Copy Email Address'}
-                        </motion.button>
-                    </motion.div>
-
-                    {/* Right — Form */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.7, delay: 0.1 }}
-                    >
-                        <form ref={formRef} onSubmit={handleSubmit} className="glass-card p-8 space-y-6">
-                            {/* Name */}
-                            <div>
-                                <label className="block text-xs font-semibold text-offwhite/50 mb-2 uppercase tracking-wider">
-                                    Name
-                                </label>
-                                <input
-                                    id="contact-name"
-                                    name="from_name"
-                                    type="text"
-                                    value={form.name}
-                                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                    className={`w-full px-4 py-3 rounded-xl bg-charcoal border text-offwhite text-sm outline-none transition-all duration-200 focus:border-burnt-orange/50 placeholder:text-offwhite/20 ${errors.name ? 'border-red-500/50' : 'border-white/10'
-                                        }`}
-                                    placeholder="Your full name"
-                                />
-                                {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
-                            </div>
-
-                            {/* Email */}
-                            <div>
-                                <label className="block text-xs font-semibold text-offwhite/50 mb-2 uppercase tracking-wider">
-                                    Email
-                                </label>
-                                <input
-                                    id="contact-email"
-                                    name="from_email"
-                                    type="email"
-                                    value={form.email}
-                                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                    className={`w-full px-4 py-3 rounded-xl bg-charcoal border text-offwhite text-sm outline-none transition-all duration-200 focus:border-burnt-orange/50 placeholder:text-offwhite/20 ${errors.email ? 'border-red-500/50' : 'border-white/10'
-                                        }`}
-                                    placeholder="you@example.com"
-                                />
-                                {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
-                            </div>
-
-                            {/* Message */}
-                            <div>
-                                <label className="block text-xs font-semibold text-offwhite/50 mb-2 uppercase tracking-wider">
-                                    Message
-                                </label>
-                                <textarea
-                                    id="contact-message"
-                                    name="message"
-                                    value={form.message}
-                                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                                    rows={5}
-                                    className={`w-full px-4 py-3 rounded-xl bg-charcoal border text-offwhite text-sm outline-none transition-all duration-200 focus:border-burnt-orange/50 placeholder:text-offwhite/20 resize-none ${errors.message ? 'border-red-500/50' : 'border-white/10'
-                                        }`}
-                                    placeholder="Tell me about your project..."
-                                />
-                                {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message}</p>}
-                            </div>
-
-                            {/* Submit */}
-                            <motion.button
-                                type="submit"
-                                disabled={sending}
-                                whileHover={{ scale: sending ? 1 : 1.02 }}
-                                whileTap={{ scale: sending ? 1 : 0.97 }}
-                                className="w-full btn-primary justify-center py-4 disabled:opacity-60 disabled:cursor-not-allowed"
-                            >
-                                {sending ? (
-                                    <span className="flex items-center gap-2">
-                                        <motion.div
-                                            className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-                                            animate={{ rotate: 360 }}
-                                            transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
-                                        />
-                                        Sending...
-                                    </span>
-                                ) : (
-                                    <span className="flex items-center gap-2">
-                                        <Send size={16} /> Send Message
-                                    </span>
-                                )}
-                            </motion.button>
-                        </form>
-                    </motion.div>
-                </div>
+  return (
+    <section id="contact" className="section-shell border-t border-white/[0.06]">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[36rem] w-[60rem] -translate-x-1/2 rounded-full bg-cyan/[0.07] blur-[140px]" />
+      <div className="section-container relative z-10">
+        <div className="mb-14 flex flex-col justify-between gap-8 lg:mb-20 lg:flex-row lg:items-end">
+          <div>
+            <div className="mb-5 flex items-center gap-3">
+              <span className="font-mono text-[10px] text-cyan/45">06</span>
+              <span className="h-px w-10 bg-cyan/35" />
+              <p className="section-subheading">Contact portal</p>
             </div>
-        </section>
-    )
+            <h2 className="section-heading max-w-5xl">
+              Let&apos;s make the next
+              <span className="text-gradient-signal block">signal matter.</span>
+            </h2>
+          </div>
+          <p className="max-w-sm text-sm leading-7 text-offwhite/48">
+            A product idea, a technical challenge, or a team that needs momentum—send the coordinates.
+          </p>
+        </div>
+
+        <div className="grid gap-5 lg:grid-cols-[0.78fr_1.22fr]">
+          <div className="system-panel hud-corners flex flex-col justify-between overflow-hidden p-6 sm:p-8">
+            <div>
+              <div className="mb-10 flex items-center justify-between border-b border-white/[0.08] pb-5">
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-offwhite/35">Open channel</span>
+                <span className="signal-chip">Available</span>
+              </div>
+              <div className="space-y-7">
+                {contactInfo.map(({ icon: Icon, label, value, href }) => (
+                  <div key={label} className="group grid grid-cols-[2.75rem_1fr] items-start gap-4">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl border border-cyan/15 bg-cyan/[0.045] text-cyan transition group-hover:border-cyan/40">
+                      <Icon size={16} aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="mb-1 block font-mono text-[9px] uppercase tracking-[0.18em] text-offwhite/30">{label}</span>
+                      {href ? (
+                        <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener noreferrer' : undefined} className="break-words text-sm font-semibold text-offwhite/75 transition hover:text-cyan">
+                          {value}
+                        </a>
+                      ) : (
+                        <span className="block text-sm font-semibold leading-6 text-offwhite/75">{value}</span>
+                      )}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button type="button" onClick={copyEmail} className="mt-12 flex w-full items-center justify-between rounded-xl border border-white/[0.09] bg-white/[0.025] px-4 py-3.5 font-mono text-[10px] uppercase tracking-[0.12em] text-offwhite/50 transition hover:border-cyan/30 hover:text-cyan">
+              <span>{copied ? 'Copied to clipboard' : 'Copy email address'}</span>
+              {copied ? <Check size={14} className="text-sage" /> : <Copy size={14} />}
+            </button>
+          </div>
+
+          <form ref={formRef} onSubmit={handleSubmit} aria-label="Contact form" className="system-panel relative overflow-hidden p-6 sm:p-8 lg:p-10">
+            <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 bg-cobalt/10 blur-[70px]" />
+            <div className="relative grid gap-6 sm:grid-cols-2">
+              <Field label="Name" id="contact-name" error={errors.name}>
+                <input id="contact-name" name="from_name" type="text" autoComplete="name" maxLength={100} value={form.name} onChange={(event) => updateField('name', event.target.value)} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'contact-name-error' : undefined} className="contact-input" placeholder="Your name" />
+              </Field>
+
+              <Field label="Email" id="contact-email" error={errors.email}>
+                <input id="contact-email" name="from_email" type="email" autoComplete="email" maxLength={254} value={form.email} onChange={(event) => updateField('email', event.target.value)} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? 'contact-email-error' : undefined} className="contact-input" placeholder="you@example.com" />
+              </Field>
+
+              <div className="sm:col-span-2">
+                <Field label="Message" id="contact-message" error={errors.message}>
+                  <textarea id="contact-message" name="message" rows={7} maxLength={2000} value={form.message} onChange={(event) => updateField('message', event.target.value)} aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? 'contact-message-error' : undefined} className="contact-input resize-none" placeholder="Tell me what you are building..." />
+                </Field>
+              </div>
+
+              <div className="sm:col-span-2 flex flex-col gap-4 border-t border-white/[0.07] pt-6 sm:flex-row sm:items-center sm:justify-between">
+                <p className="font-mono text-[9px] uppercase leading-5 tracking-[0.12em] text-offwhite/25">Delivered through an EmailJS relay</p>
+                <motion.button type="submit" disabled={sending} whileHover={sending ? undefined : { scale: 1.02 }} whileTap={sending ? undefined : { scale: 0.98 }} className="btn-primary min-w-48 disabled:cursor-wait disabled:opacity-60">
+                  {sending ? 'Transmitting...' : 'Send message'}
+                  {sending ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-charcoal/25 border-t-charcoal" /> : <Send size={14} aria-hidden="true" />}
+                </motion.button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <a href="mailto:ahumuzacedric@gmail.com" className="group mt-16 flex items-center justify-between border-y border-white/[0.07] py-6 text-offwhite/45 transition hover:text-cyan">
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em]">Prefer direct transmission?</span>
+          <span className="flex items-center gap-2 text-sm font-bold">Email Cedric <ArrowUpRight size={15} className="transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span>
+        </a>
+      </div>
+    </section>
+  )
+}
+
+function Field({ label, id, error, children }: { label: string; id: string; error?: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label htmlFor={id} className="mb-2.5 block font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-offwhite/45">{label}</label>
+      {children}
+      {error && <p id={`${id}-error`} role="alert" className="mt-2 font-mono text-[9px] uppercase tracking-[0.1em] text-red-300">{error}</p>}
+    </div>
+  )
 }

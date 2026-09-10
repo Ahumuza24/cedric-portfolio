@@ -1,54 +1,47 @@
-import { Github, Mail, Phone } from 'lucide-react'
+import { ArrowUpRight, Github, Mail, Phone } from 'lucide-react'
+
+const socialLinks = [
+  { label: 'GitHub', href: 'https://github.com/Ahumuza24', icon: Github },
+  { label: 'Email', href: 'mailto:ahumuzacedric@gmail.com', icon: Mail },
+  { label: 'WhatsApp', href: 'https://wa.me/256703103834', icon: Phone },
+]
 
 export default function Footer() {
-    return (
-        <footer className="border-t border-white/5 bg-graphite py-12">
-            <div className="section-container">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                    {/* Brand */}
-                    <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-burnt-orange flex items-center justify-center">
-                            <span className="text-white font-black text-sm">C</span>
-                        </div>
-                        <div>
-                            <p className="font-bold text-offwhite">Cedric Ahumuza</p>
-                            <p className="text-xs text-offwhite/40">Full Stack Developer</p>
-                        </div>
-                    </div>
+  return (
+    <footer className="border-t border-white/[0.07] bg-[#03050a] py-10">
+      <div className="section-container">
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <a href="#hero" className="group inline-flex items-center gap-3 text-lg font-bold tracking-[-0.04em] text-offwhite">
+              Cedric Ahumuza
+              <ArrowUpRight size={16} className="text-cyan transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </a>
+            <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.18em] text-offwhite/30">
+              Design · Code · Systems
+            </p>
+          </div>
 
-                    {/* Quick links */}
-                    <p className="text-xs text-offwhite/30 text-center">
-                        &copy; {new Date().getFullYear()} Cedric Ahumuza. All rights reserved.
-                    </p>
+          <div className="flex items-center gap-2">
+            {socialLinks.map(({ label, href, icon: Icon }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith('http') ? '_blank' : undefined}
+                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                aria-label={label}
+                className="grid h-10 w-10 place-items-center rounded-full border border-white/[0.08] text-offwhite/40 transition hover:border-cyan/40 hover:bg-cyan/[0.06] hover:text-cyan"
+              >
+                <Icon size={15} />
+              </a>
+            ))}
+          </div>
+        </div>
 
-                    {/* Social */}
-                    <div className="flex items-center gap-4">
-                        <a
-                            href="https://github.com/Ahumuza24"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-offwhite/40 hover:text-burnt-orange transition-colors duration-200"
-                            aria-label="GitHub"
-                        >
-                            <Github size={18} />
-                        </a>
-                        <a
-                            href="mailto:ahumuzacedric@gmail.com"
-                            className="text-offwhite/40 hover:text-burnt-orange transition-colors duration-200"
-                            aria-label="Email"
-                        >
-                            <Mail size={18} />
-                        </a>
-                        <a
-                            href="https://wa.me/256703103834"
-                            className="text-offwhite/40 hover:text-burnt-orange transition-colors duration-200"
-                            aria-label="WhatsApp"
-                        >
-                            <Phone size={18} />
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    )
+        <div className="mt-9 flex flex-col gap-2 border-t border-white/[0.06] pt-6 font-mono text-[8px] uppercase tracking-[0.15em] text-offwhite/20 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; {new Date().getFullYear()} Cedric Ahumuza</p>
+          <p>Transmitting from Kampala, Uganda</p>
+        </div>
+      </div>
+    </footer>
+  )
 }
