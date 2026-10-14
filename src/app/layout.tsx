@@ -28,7 +28,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${sans.variable} ${mono.variable} ${hand.variable} ${display.variable} scroll-smooth antialiased`}
     >
-      <body>{children}</body>
+      {/* Browser extensions (e.g. ColorZilla) inject attributes on <body> before hydration */}
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }
