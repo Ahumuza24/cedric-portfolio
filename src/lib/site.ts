@@ -51,6 +51,19 @@ export const site = {
   copyrightYear: 2026,
   available: true,
   email: "ahumuzacedric@gmail.com",
+  seo: {
+    description:
+      "Cedric Ahumuza is a full stack developer in Kampala, Uganda, building production web platforms, internal tools, and automation with React, Next.js, Django, and PostgreSQL.",
+    keywords: [
+      "Cedric Ahumuza",
+      "full stack developer",
+      "software engineer Kampala",
+      "web developer Uganda",
+      "React developer",
+      "Next.js developer",
+      "Django developer",
+    ],
+  },
   resumeUrl:
     "https://drive.google.com/file/d/1K5JZkpHVrgJqiZ3X60nDuHBI1YvbOecD/view?usp=sharing",
 
@@ -81,7 +94,7 @@ export const site = {
     {
       company: "Fundi Robotics Limited",
       title: "Software Engineer",
-      period: "Feb 2024 – Present",
+      period: "Feb 2023 – Present",
       location: "Kampala, Uganda",
       current: true,
       summary:
