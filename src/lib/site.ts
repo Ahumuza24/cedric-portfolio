@@ -172,6 +172,7 @@ export const site = {
         categories: ["Mobile", "Web"],
         description:
           "Connects homeowners with domestic workers. React Native mobile app and React web client on a Django and PostgreSQL back end.",
+        href: "https://maidmatch.netlify.app",
         tone: "mint",
         visual: "phones",
         screens: ["/projects/maidmatch-maid.jpg", "/projects/maidmatch-household.jpg"],
