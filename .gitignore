@@ -1,37 +1,53 @@
-# Logs
-logs
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+/dist
+
+# testing
+/coverage
+/playwright-report
+/test-results
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# env files (keep secrets out of git)
+.env
+.env*.local
+
+# vercel
+.vercel
+
+# logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-coverage
-playwright-report
-test-results
-.playwright-cli
-output
-.claude
-dist/
-.agents
-
-# Editor directories and files
+# editor and OS
+.DS_Store
+.idea
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
 *.sw?
 
-# custom
+# local agent tooling (vendored skills, settings)
+.claude
+.agents
 /skills
 /portfolio-rebuild-prompt.md
-.env
