@@ -138,7 +138,7 @@ export const site = {
         href: "https://www.futurefundi.org",
         tone: "blue",
         visual: "browser",
-        image: "/projects/future-fundi.png",
+        image: "/projects/future-fundi-home.png",
       },
       {
         title: "Production Monitor",
