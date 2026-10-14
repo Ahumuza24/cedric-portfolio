@@ -1,4 +1,4 @@
-import { Note, Scribble, SelectionFrame } from "@/components/decor";
+import { Note, noteHover, Scribble, SelectionFrame } from "@/components/decor";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -66,7 +66,7 @@ export function Experience() {
             <li key={item.title}>
               <Note
                 tone={i % 2 ? "mint" : "cream"}
-                className={cn("flex h-full flex-col", noteTilts[i % noteTilts.length])}
+                className={cn("flex h-full flex-col", noteTilts[i % noteTilts.length], noteHover)}
               >
                 <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-ink/60">
                   {item.period}

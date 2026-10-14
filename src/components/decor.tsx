@@ -26,6 +26,10 @@ const noteTones = {
   mint: "bg-pop-mint",
 };
 
+/** Hover state for notes used as cards: straightens, lifts and deepens the shadow. */
+export const noteHover =
+  "transition-[translate,rotate,box-shadow] duration-300 ease-out hover:shadow-[0_22px_34px_-16px_rgba(20,20,20,0.55)] motion-safe:hover:-translate-y-2 motion-safe:hover:rotate-0";
+
 /** Tilted paper note. */
 export function Note({
   tone = "cream",

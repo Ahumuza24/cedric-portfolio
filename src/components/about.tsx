@@ -1,4 +1,5 @@
-import { DiamondTile, Note, Scribble, SelectionFrame } from "@/components/decor";
+import { DiamondTile, Note, noteHover, Scribble, SelectionFrame } from "@/components/decor";
+import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 
 const chipTones = ["bg-pop-yellow", "bg-pop-green", "bg-pop-pink text-white", "bg-pop-blue"];
@@ -24,10 +25,10 @@ export function About() {
         </h2>
 
         <div className="mx-auto mt-12 grid max-w-3xl gap-5 sm:grid-cols-2">
-          <Note tone="cream" className="-rotate-1 text-[15px] leading-relaxed">
+          <Note tone="cream" className={cn("-rotate-1 text-[15px] leading-relaxed", noteHover)}>
             {notes[0]}
           </Note>
-          <Note tone="mint" className="rotate-1 text-[15px] leading-relaxed sm:-translate-y-1">
+          <Note tone="mint" className={cn("rotate-1 text-[15px] leading-relaxed sm:-translate-y-1", noteHover)}>
             {notes[1]}
           </Note>
         </div>

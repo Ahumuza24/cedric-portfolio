@@ -3,6 +3,7 @@ import { ChevronsRight, Flower2, Target } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { CursorTag, Note, Scribble, SelectionFrame } from "@/components/decor";
 import { LocalClock } from "@/components/local-clock";
+import { Typewriter } from "@/components/typewriter";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +32,7 @@ export function Hero() {
           </Note>
           <SelectionFrame className="px-3 py-2 text-pop-blue">
             <h1 className="font-display text-[clamp(2.25rem,8.5vw,5rem)] font-extrabold uppercase leading-none tracking-tight text-ink">
-              {site.name}
+              <Typewriter text={site.name} />
             </h1>
           </SelectionFrame>
         </div>
