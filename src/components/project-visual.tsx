@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { ExamVisual } from "@/components/exam-visual";
 import type { Project } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -102,7 +103,7 @@ function Phones() {
   );
 }
 
-const visuals = { browser: Browser, dashboard: Dashboard, phones: Phones };
+const visuals = { browser: Browser, dashboard: Dashboard, phones: Phones, exam: ExamVisual };
 
 type ProjectVisualProps = {
   kind: Project["visual"];

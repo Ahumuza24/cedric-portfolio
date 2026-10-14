@@ -9,7 +9,7 @@ export type Project = {
   /** Public link. Leave out for internal or private projects. */
   href?: string;
   tone: ProjectTone;
-  visual: "browser" | "dashboard" | "phones";
+  visual: "browser" | "dashboard" | "phones" | "exam";
   /** Screenshot in /public. When set, it replaces the abstract visual. */
   image?: string;
   /** Two mobile screenshots in /public, shown inside the phone mockups. */
@@ -158,7 +158,7 @@ export const site = {
         description:
           "Generates exam questions for educational institutions using custom ML models served through a Django back end.",
         tone: "yellow",
-        visual: "browser",
+        visual: "exam",
       },
       {
         title: "MaidMatch",
