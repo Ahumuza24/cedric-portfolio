@@ -141,12 +141,14 @@ export const site = {
         image: "/projects/future-fundi-home.png",
       },
       {
-        title: "Production Monitor",
-        categories: ["Internal tools", "Real-time"],
+        title: "PutMeOn",
+        categories: ["Marketplace", "Full stack"],
         description:
-          "Real-time dashboard tracking production metrics and workflows across the department. Next.js on Firebase.",
+          "Marketplace connecting clients with trusted local service providers, with booking, built-in chat, and secure payments in one place. React Router front end on a Django API.",
+        href: "https://www.putmeonug.app",
         tone: "ink",
-        visual: "dashboard",
+        visual: "browser",
+        image: "/projects/putmeon-home.png",
       },
       {
         title: "AI Exam Generator",
