@@ -69,6 +69,29 @@ function Phone({ className, accent }: { className?: string; accent: string }) {
   );
 }
 
+function ScreenPhone({ src, alt, className }: { src: string; alt: string; className?: string }) {
+  return (
+    <div
+      className={cn(
+        "relative aspect-[27/51] w-[32%] overflow-hidden rounded-[1.4rem] border-[5px] border-ink bg-ink shadow-xl",
+        className,
+      )}
+    >
+      <Image src={src} alt={alt} fill sizes="(min-width: 1024px) 16vw, 32vw" className="object-cover object-top" />
+    </div>
+  );
+}
+
+function ScreenPhones({ screens, title }: { screens: [string, string]; title: string }) {
+  const [front, back] = screens;
+  return (
+    <div className="flex size-full items-center justify-center">
+      <ScreenPhone src={back} alt={`${title} app screen`} className="translate-x-4 -rotate-6" />
+      <ScreenPhone src={front} alt={`${title} app screen`} className="z-10 -translate-x-4 translate-y-4 rotate-6" />
+    </div>
+  );
+}
+
 function Phones() {
   return (
     <div className="flex size-full items-center justify-center">
@@ -84,11 +107,15 @@ const visuals = { browser: Browser, dashboard: Dashboard, phones: Phones };
 type ProjectVisualProps = {
   kind: Project["visual"];
   image?: string;
+  screens?: Project["screens"];
   title: string;
 };
 
 /** Real screenshot when the project has one, otherwise an abstract stand-in. */
-export function ProjectVisual({ kind, image, title }: ProjectVisualProps) {
+export function ProjectVisual({ kind, image, screens, title }: ProjectVisualProps) {
+  if (screens) {
+    return <ScreenPhones screens={screens} title={title} />;
+  }
   if (image) {
     return (
       <Image

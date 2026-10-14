@@ -95,7 +95,12 @@ export function Work() {
 
                 <SelectionFrame className="aspect-[4/3] w-full self-center">
                   <div className="relative size-full overflow-hidden">
-                    <ProjectVisual kind={project.visual} image={project.image} title={project.title} />
+                    <ProjectVisual
+                      kind={project.visual}
+                      image={project.image}
+                      screens={project.screens}
+                      title={project.title}
+                    />
                   </div>
                 </SelectionFrame>
               </article>

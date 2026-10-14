@@ -12,6 +12,8 @@ export type Project = {
   visual: "browser" | "dashboard" | "phones";
   /** Screenshot in /public. When set, it replaces the abstract visual. */
   image?: string;
+  /** Two mobile screenshots in /public, shown inside the phone mockups. */
+  screens?: [string, string];
 };
 
 export type Role = {
@@ -165,6 +167,7 @@ export const site = {
           "Connects homeowners with domestic workers. React Native mobile app and React web client on a Django and PostgreSQL back end.",
         tone: "mint",
         visual: "phones",
+        screens: ["/projects/maidmatch-maid.jpg", "/projects/maidmatch-household.jpg"],
       },
     ] satisfies Project[],
   },
