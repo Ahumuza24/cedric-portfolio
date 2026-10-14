@@ -62,7 +62,9 @@ export function Contact() {
           style={{ backgroundImage: STRIPES }}
         >
           <a
-            href={`mailto:${site.email}`}
+            href={site.contact.whatsappUrl}
+            target="_blank"
+            rel="noreferrer"
             className={cn(
               buttonVariants(),
               "h-auto gap-4 rounded-none border-2 border-ink bg-pop-blue p-2.5 font-display text-[clamp(2rem,8vw,3.5rem)] font-bold uppercase leading-none tracking-tight text-ink shadow-[6px_6px_0_var(--ink)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-pop-blue sm:gap-6",

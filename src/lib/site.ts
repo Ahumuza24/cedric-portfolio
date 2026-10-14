@@ -1,5 +1,7 @@
 // All copy on the site lives here.
 
+const WHATSAPP_URL = "https://wa.me/256703103834";
+
 export type ProjectTone = "blue" | "ink" | "yellow" | "mint";
 
 export type Project = {
@@ -191,13 +193,14 @@ export const site = {
   },
 
   contact: {
+    whatsappUrl: WHATSAPP_URL,
     blurb:
-      "Open to full-time roles, contract work, and technical collaborations. Email is the quickest way to reach me.",
+      "Open to full-time roles, contract work, and technical collaborations. WhatsApp is the quickest way to reach me.",
     comment: "Available for full stack builds, internal tooling, and client web platforms.",
   },
 
   socials: [
     { label: "GitHub", short: "GH", href: "https://github.com/Ahumuza24" },
-    { label: "WhatsApp", short: "WA", href: "https://wa.me/256703103834" },
+    { label: "WhatsApp", short: "WA", href: WHATSAPP_URL },
   ],
 };
