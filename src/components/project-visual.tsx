@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import type { Project } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -79,8 +81,25 @@ function Phones() {
 
 const visuals = { browser: Browser, dashboard: Dashboard, phones: Phones };
 
-/** Abstract stand-in for a project screenshot. Swap for next/image when you have real shots. */
-export function ProjectVisual({ kind }: { kind: Project["visual"] }) {
+type ProjectVisualProps = {
+  kind: Project["visual"];
+  image?: string;
+  title: string;
+};
+
+/** Real screenshot when the project has one, otherwise an abstract stand-in. */
+export function ProjectVisual({ kind, image, title }: ProjectVisualProps) {
+  if (image) {
+    return (
+      <Image
+        src={image}
+        alt={`${title} website screenshot`}
+        fill
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        className="object-cover object-left-top"
+      />
+    );
+  }
   const Visual = visuals[kind];
   return <Visual />;
 }

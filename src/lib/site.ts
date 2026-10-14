@@ -10,6 +10,8 @@ export type Project = {
   href?: string;
   tone: ProjectTone;
   visual: "browser" | "dashboard" | "phones";
+  /** Screenshot in /public. When set, it replaces the abstract visual. */
+  image?: string;
 };
 
 export type Role = {
@@ -136,6 +138,7 @@ export const site = {
         href: "https://www.futurefundi.org",
         tone: "blue",
         visual: "browser",
+        image: "/projects/future-fundi.png",
       },
       {
         title: "Production Monitor",
