@@ -63,6 +63,11 @@ export const site = {
   },
 
   about: {
+    photo: {
+      src: "/cedric.jpg",
+      alt: "Portrait of Cedric Ahumuza smiling, wearing a grey polo shirt",
+      caption: "that's me!",
+    },
     statement:
       "I'm Cedric, a full stack developer in Kampala. I design, build, and operate software end to end, from data models and APIs to the interfaces people use.",
     notes: [

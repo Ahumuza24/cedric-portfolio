@@ -1,9 +1,24 @@
+import Image from "next/image";
+
 import { DiamondTile, Note, noteHover, Scribble, SelectionFrame } from "@/components/decor";
 import { cn } from "@/lib/utils";
 import { site } from "@/lib/site";
 
 const chipTones = ["bg-pop-yellow", "bg-pop-green", "bg-pop-pink text-white", "bg-pop-blue"];
 const tileTones = ["bg-pop-yellow", "bg-pop-pink"];
+
+/** Polaroid-style print of Cedric with a hand-written caption. */
+function Portrait() {
+  const { src, alt, caption } = site.about.photo;
+  return (
+    <figure className={cn("w-56 shrink-0 rotate-2 bg-white p-3 pb-2 shadow-[0_14px_30px_-14px_rgba(20,20,20,0.5)] sm:w-64", noteHover)}>
+      <div className="relative aspect-[4/5] overflow-hidden">
+        <Image src={src} alt={alt} fill sizes="(min-width: 640px) 256px, 224px" className="object-cover" />
+      </div>
+      <figcaption className="pt-2 text-center font-hand text-2xl text-ink">{caption}</figcaption>
+    </figure>
+  );
+}
 
 export function About() {
   const { statement, notes, skills } = site.about;
@@ -20,9 +35,12 @@ export function About() {
           </SelectionFrame>
         </div>
 
-        <h2 className="mx-auto mt-9 max-w-3xl text-balance text-center text-[clamp(1.6rem,4.2vw,2.4rem)] font-semibold leading-[1.25] tracking-tight">
-          {statement}
-        </h2>
+        <div className="mx-auto mt-9 flex max-w-4xl flex-col items-center gap-10 md:flex-row md:gap-12">
+          <Portrait />
+          <h2 className="text-balance text-center text-[clamp(1.6rem,4.2vw,2.4rem)] font-semibold leading-[1.25] tracking-tight md:text-left">
+            {statement}
+          </h2>
+        </div>
 
         <div className="mx-auto mt-12 grid max-w-3xl gap-5 sm:grid-cols-2">
           <Note tone="cream" className={cn("-rotate-1 text-[15px] leading-relaxed", noteHover)}>
